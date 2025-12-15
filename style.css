@@ -145,3 +145,31 @@ footer {
     background: #020617;
     color: #94a3b8;
 }
+
+#blog-content {
+    max-width: 800px;
+    margin: 20px auto;
+    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
+}
+
+#blog-content h1, #blog-content h2, #blog-content h3 {
+    color: #333;
+}
+
+#blog-content a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#blog-content pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+#blog-content code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 4px;
+}

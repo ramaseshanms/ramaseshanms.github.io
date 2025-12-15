@@ -124,7 +124,7 @@ const dropdown = document.getElementById("blogs-dropdown");
 blogs.forEach(blog => {
     const li = document.createElement("li");
     const a = document.createElement("a");
-    a.href = blog.file;
+    a.href = `blog.html?file=${encodeURIComponent(blog.file)}`;
     a.textContent = blog.title;
     li.appendChild(a);
     dropdown.appendChild(li);

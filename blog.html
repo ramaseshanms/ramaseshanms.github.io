@@ -1,30 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | Ramaseshan</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Marked.js for Markdown rendering -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Blog | Ramaseshan Subramanian</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
 <header>
-  <!-- Your navbar here -->
+    <nav class="navbar">
+        <div class="logo">Ramaseshan</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="technical.html">Achievements</a></li>
+            <li><a href="resume.pdf" target="_blank">Resume</a></li>
+        </ul>
+    </nav>
 </header>
 
-<main>
-  <h1>Blog</h1>
-  <!-- THIS is where the Markdown content will appear -->
-  <div id="blog-content"></div>
+<main class="section">
+    <h1 id="blog-title">Loading...</h1>
+    <div id="blog-content"></div>
 </main>
 
 <footer>
-  <p>© 2025 Ramaseshan Subramanian</p>
+    <p>© 2025 Ramaseshan Subramanian</p>
 </footer>
 
 <script src="blogs-list.js"></script>
-<script src="blog-loader.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const blogName = params.get('file'); // ?file=FMA-Net++.md
+
+const blog = blogs.find(b => b.file === blogName);
+
+// Fallback if blog not found
+if (!blog) {
+    document.getElementById('blog-title').textContent = "Blog not found";
+    document.getElementById('blog-content').innerHTML = "<p>The blog you are looking for does not exist.</p>";
+} else {
+    document.getElementById('blog-title').textContent = blog.title;
+
+    fetch(blog.file)
+        .then(response => response.text())
+        .then(md => {
+            document.getElementById('blog-content').innerHTML = marked.parse(md);
+        })
+        .catch(err => {
+            document.getElementById('blog-content').innerHTML = "<p>Failed to load blog.</p>";
+            console.error(err);
+        });
+}
+</script>
+
 </body>
 </html>
