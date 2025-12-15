@@ -1,14 +1,11 @@
-/* ==============================
-   CSS Variables – Color Palette
-============================== */
 :root {
-    --primary-color: #007BFF;       /* Accent blue */
-    --secondary-color: #20C997;     /* Teal accent */
-    --bg-color: #F0F4F8;            /* Light background */
-    --header-bg: #020617;           /* Dark header/nav */
-    --card-bg: #FFFFFF;             /* Card background */
-    --text-main: #333333;           /* Main text */
-    --text-secondary: #555555;      /* Secondary text */
+    --primary-color: #00CFFF;      /* Neon Blue */
+    --secondary-color: #A259FF;    /* Neon Purple */
+    --bg-color: #0D0D0D;           /* Dark background */
+    --header-bg: #1A1A1A;          /* Header/nav background */
+    --card-bg: #1A1A1A;            /* Card background */
+    --text-main: #E5E5E5;          /* Main text */
+    --text-secondary: #AAAAAA;     /* Secondary text */
 }
 
 /* ==============================
@@ -48,6 +45,7 @@ header {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--primary-color);
+    cursor: pointer;
 }
 
 .nav-links {
@@ -58,7 +56,7 @@ header {
 }
 
 .nav-links a {
-    color: #e5e7eb;
+    color: var(--text-main);
     text-decoration: none;
     transition: color 0.3s;
 }
@@ -71,8 +69,15 @@ header {
     border: 1px solid var(--primary-color);
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
+    transition: 0.3s;
 }
 
+.resume-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-color);
+}
+
+/* Dropdown menu */
 .dropdown {
     position: relative;
 }
@@ -128,7 +133,7 @@ header {
 .hero h2 {
     margin-top: 0.5rem;
     font-weight: 400;
-    color: var(--text-secondary);
+    color: var(--secondary-color);
 }
 
 .hero-image {
@@ -140,9 +145,10 @@ header {
     width: 250px;
     border-radius: 50%;
     border: 4px solid var(--primary-color);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--secondary-color);
 }
 
+/* Social links */
 .socials {
     margin-top: 1.5rem;
 }
@@ -150,6 +156,11 @@ header {
 .socials a {
     margin: 0 0.7rem;
     color: var(--primary-color);
+    transition: 0.3s;
+}
+
+.socials a:hover {
+    color: var(--secondary-color);
 }
 
 /* ==============================
@@ -172,6 +183,7 @@ header {
     border-radius: 10px;
     margin-bottom: 1.5rem;
     color: var(--text-main);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .card h3 {
@@ -226,18 +238,14 @@ footer {
 }
 
 #blog-content pre {
-    background-color: #f4f4f4;
+    background-color: #1A1A1A;
     padding: 10px;
     overflow-x: auto;
+    border-radius: 6px;
 }
 
 #blog-content code {
-    background-color: #f4f4f4;
+    background-color: #1A1A1A;
     padding: 2px 4px;
     border-radius: 4px;
-}
-#blog-content img {
-    max-width: 100%;
-    height: auto;
-    margin: 10px 0;
 }
