@@ -1,3 +1,19 @@
+/* ==============================
+   CSS Variables – Color Palette
+============================== */
+:root {
+    --primary-color: #007BFF;       /* Accent blue */
+    --secondary-color: #20C997;     /* Teal accent */
+    --bg-color: #F0F4F8;            /* Light background */
+    --header-bg: #020617;           /* Dark header/nav */
+    --card-bg: #FFFFFF;             /* Card background */
+    --text-main: #333333;           /* Main text */
+    --text-secondary: #555555;      /* Secondary text */
+}
+
+/* ==============================
+   Global Styles
+============================== */
 * {
     margin: 0;
     padding: 0;
@@ -6,13 +22,16 @@
 }
 
 body {
-    background: #0f172a;
-    color: #e5e7eb;
+    background: var(--bg-color);
+    color: var(--text-main);
     line-height: 1.6;
 }
 
+/* ==============================
+   Header / Navbar
+============================== */
 header {
-    background: #020617;
+    background: var(--header-bg);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -28,7 +47,7 @@ header {
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #38bdf8;
+    color: var(--primary-color);
 }
 
 .nav-links {
@@ -45,11 +64,11 @@ header {
 }
 
 .nav-links a:hover {
-    color: #38bdf8;
+    color: var(--primary-color);
 }
 
 .resume-btn {
-    border: 1px solid #38bdf8;
+    border: 1px solid var(--primary-color);
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
 }
@@ -61,7 +80,7 @@ header {
 .dropdown-menu {
     display: none;
     position: absolute;
-    background: #020617;
+    background: var(--header-bg);
     top: 2rem;
     list-style: none;
     padding: 0.5rem;
@@ -76,19 +95,52 @@ header {
     padding: 0.4rem 1rem;
 }
 
+/* ==============================
+   Hero Section
+============================== */
 .hero {
-    text-align: center;
-    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background-color: var(--bg-color);
+}
+
+.hero-content {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    align-items: center;
+}
+
+.hero-text {
+    flex: 1;
+    min-width: 280px;
+    margin-right: 40px;
+    text-align: left;
 }
 
 .hero h1 {
     font-size: 3rem;
-    color: #38bdf8;
+    color: var(--primary-color);
 }
 
 .hero h2 {
     margin-top: 0.5rem;
     font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.hero-image {
+    flex: 0 0 250px;
+    text-align: center;
+}
+
+.hero-image img {
+    width: 250px;
+    border-radius: 50%;
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .socials {
@@ -97,9 +149,12 @@ header {
 
 .socials a {
     margin: 0 0.7rem;
-    color: #38bdf8;
+    color: var(--primary-color);
 }
 
+/* ==============================
+   Sections / Cards
+============================== */
 .section {
     padding: 3rem 2rem;
     max-width: 1000px;
@@ -108,14 +163,15 @@ header {
 
 .section h2 {
     margin-bottom: 1.5rem;
-    color: #38bdf8;
+    color: var(--primary-color);
 }
 
 .card {
-    background: #020617;
+    background: var(--card-bg);
     padding: 1.5rem;
     border-radius: 10px;
     margin-bottom: 1.5rem;
+    color: var(--text-main);
 }
 
 .card h3 {
@@ -124,7 +180,7 @@ header {
 
 .card span {
     font-size: 0.9rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
 }
 
 .skills-grid {
@@ -134,18 +190,25 @@ header {
 }
 
 .skill-card {
-    background: #020617;
+    background: var(--card-bg);
     padding: 1.5rem;
     border-radius: 10px;
+    color: var(--text-main);
 }
 
+/* ==============================
+   Footer
+============================== */
 footer {
     text-align: center;
     padding: 1.5rem;
-    background: #020617;
-    color: #94a3b8;
+    background: var(--header-bg);
+    color: var(--text-secondary);
 }
 
+/* ==============================
+   Blog Content
+============================== */
 #blog-content {
     max-width: 800px;
     margin: 20px auto;
@@ -154,11 +217,11 @@ footer {
 }
 
 #blog-content h1, #blog-content h2, #blog-content h3 {
-    color: #333;
+    color: var(--text-main);
 }
 
 #blog-content a {
-    color: #007bff;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
@@ -173,10 +236,8 @@ footer {
     padding: 2px 4px;
     border-radius: 4px;
 }
-
-.profile-img {
-    width: 200px;
-    border-radius: 50%;
-    display: block;
-    margin: 20px auto;
+#blog-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
 }
