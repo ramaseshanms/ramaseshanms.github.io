@@ -1,146 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ramaseshan Subramanian | Product Manager</title>
-  <link rel="stylesheet" href="style.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ramaseshan Subramanian | Portfolio</title>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
 <header>
-  <nav class="navbar">
-    <h1 class="logo">Ramaseshan S</h1>
-    <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#resume">Resume</a></li>
-      <li><a href="#blogs">Blogs</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+    <nav class="navbar">
+        <div class="logo">Ramaseshan</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+
+            <li class="dropdown">
+                <a href="#">Blogs ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">AI Optimization</a></li>
+                    <li><a href="#">Product Management</a></li>
+                    <li><a href="#">Embedded Systems</a></li>
+                </ul>
+            </li>
+
+            <!-- Replace resume.pdf with your public PDF link -->
+            <li><a href="resume.pdf" target="_blank" class="resume-btn">Resume</a></li>
+        </ul>
+    </nav>
 </header>
 
-<section id="home" class="hero">
-  <h2>Ramaseshan Subramanian</h2>
-  <p>
-    Product Manager • AI Systems Engineer • Edge & Cloud
-  </p>
-  <div class="hero-links">
-    <a href="https://github.com/ramseshu1" target="_blank">GitHub</a>
-    <a href="https://www.linkedin.com/in/ramaseshan-subramanian" target="_blank">LinkedIn</a>
-  </div>
+<section class="hero">
+    <h1>Ramaseshan Subramanian</h1>
+    <h2>Product Manager | AI & Embedded Systems</h2>
+    <p>
+        Highly motivated software professional with 3.5+ years of experience in 
+        AI optimization on CPU servers and edge devices, passionate about 
+        building user-centric, high-impact products.
+    </p>
+
+    <div class="socials">
+        <a href="mailto:your-email@gmail.com">Email</a>
+        <a href="https://www.linkedin.com/in/ramaseshan-subramanian/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/ramseshu1" target="_blank">GitHub</a>
+    </div>
 </section>
 
-<!-- ================= RESUME ================= -->
-<section id="resume" class="section">
-  <h2>Resume</h2>
+<section id="experience" class="section">
+    <h2>Experience</h2>
 
-  <div class="resume-block">
-    <h3>Profile Summary</h3>
-    <p>
-      Highly motivated software professional with 3.5+ years of experience in
-      AI optimization across CPU servers and edge devices (Jetson Orin, Xavier,
-      TI TDA4VM). Seeking to leverage strong technical depth and user-centric
-      thinking to drive high-impact product development as a Product Manager.
-    </p>
-  </div>
-
-  <div class="resume-block">
-    <h3>Experience</h3>
-
-    <div class="job">
-      <h4>Senior Software Engineer (AI) — Multicoreware Inc</h4>
-      <span>May 2025 – Present | Chennai, India</span>
-      <ul>
-        <li>Integrated BEVDet into Autoware Universe and ported BEVFormer to C++ for deterministic embedded execution.</li>
-        <li>Optimized CUDA kernels and ROS2 pipelines achieving ~3× speedups on Jetson platforms.</li>
-        <li>Drove SIMD-vectorized, NUMA-aware pipelines on EPYC servers.</li>
-        <li>Built production inference pipelines using vLLM, ollama, and llama.cpp.</li>
-        <li>Migrated Make → CMake and shipped manylinux wheels with CPU feature dispatch.</li>
-      </ul>
+    <div class="card">
+        <h3>Senior Software Engineer (AI)</h3>
+        <span>Multicoreware Inc Pvt Ltd | May 2025 – Present</span>
+        <ul>
+            <li>Integrated BEVDet into Autoware Universe and ported BEVFormer to C++.</li>
+            <li>Optimized CUDA kernels achieving ~3× speedup on Jetson.</li>
+            <li>Vectorized transformer pipelines using OneDNN and TorchScript.</li>
+            <li>Operated vLLM, llama.cpp with paged KV caches to meet SLOs.</li>
+            <li>Migrated build systems to CMake and shipped manylinux wheels.</li>
+        </ul>
     </div>
 
-    <div class="job">
-      <h4>Software Engineer (AI) — Multicoreware Inc</h4>
-      <span>Jan 2023 – Apr 2025</span>
-      <ul>
-        <li>Accelerated a LiDAR-based ROS2 pre-crash system by 300%.</li>
-        <li>Ported collision alert and surveillance systems to Jetson Orin & Xavier.</li>
-        <li>Led development of a live Computer Vision system for EVs.</li>
-        <li>Deployed neural networks on TI TDA4VM using C7x DSP acceleration.</li>
-      </ul>
+    <div class="card">
+        <h3>Software Engineer (AI)</h3>
+        <span>Multicoreware Inc Pvt Ltd | Jan 2023 – Apr 2025</span>
+        <ul>
+            <li>Optimized LIDAR ROS2 pre-crash system by 300%.</li>
+            <li>Ported AI systems to Nvidia Jetson Orin and Xavier.</li>
+            <li>Built gesture recognition using Infineon RADAR.</li>
+            <li>Led live Computer Vision system for EVs.</li>
+        </ul>
     </div>
 
-    <div class="job">
-      <h4>IoT Product Manager (Jr. Innovator) — Indicold</h4>
-      <span>Apr 2021 – Oct 2021 | Gurugram, India</span>
-      <ul>
-        <li>Acted as end-to-end product owner for IoT warehouse solutions.</li>
-        <li>Initiated and built the robotics division.</li>
-        <li>Designed telepresence robots and multiple IoT product demos.</li>
-        <li>Worked closely with customers and cross-functional teams.</li>
-      </ul>
+    <div class="card">
+        <h3>IoT Product Manager – Jr. Innovator</h3>
+        <span>Indicold, Kailash Agro Pvt Ltd | Apr 2021 – Oct 2021</span>
+        <ul>
+            <li>Owned end-to-end product development for IoT warehouse solutions.</li>
+            <li>Designed telepresence robot for warehouses.</li>
+            <li>Initiated robotics division and built IoT demos.</li>
+        </ul>
     </div>
-  </div>
-
-  <div class="resume-block">
-    <h3>Skills</h3>
-    <p>
-      <strong>Product:</strong> Roadmapping, GTM, Agile, Jira, User Stories, Competitive Analysis<br/>
-      <strong>AI/ML:</strong> PyTorch, ONNXRT, TensorFlow, LLM Optimization, CUDA, ROS2, Autoware<br/>
-      <strong>Systems:</strong> CPU Servers, Jetson Orin/Xavier, TI TDA4VM, Linux, Cloud
-    </p>
-  </div>
-
-  <div class="resume-block">
-    <h3>Education</h3>
-    <p>
-      <strong>B.Tech – Electrical & Electronics</strong><br/>
-      SASTRA Deemed University (2015–2019)
-    </p>
-  </div>
 </section>
 
-<!-- ================= BLOGS ================= -->
-<section id="blogs" class="section">
-  <h2>Blogs</h2>
+<section id="skills" class="section">
+    <h2>Skills</h2>
 
-  <div class="blog-container">
-    <article class="blog-card">
-      <h3>From Systems Engineer to Product Manager</h3>
-      <p class="meta">Product • Career</p>
-      <p>
-        Lessons learned transitioning from low-level AI optimization
-        to product ownership and strategy.
-      </p>
-    </article>
+    <div class="skills-grid">
+        <div class="skill-card">
+            <h3>Product Management</h3>
+            <p>Roadmapping, GTM Strategy, Agile, Jira, Confluence, Competitive Analysis</p>
+        </div>
 
-    <article class="blog-card">
-      <h3>Optimizing LLM Inference on Edge Devices</h3>
-      <p class="meta">AI • Systems</p>
-      <p>
-        Practical insights on vLLM, KV caching, and heterogeneous offload.
-      </p>
-    </article>
+        <div class="skill-card">
+            <h3>AI & Software</h3>
+            <p>PyTorch, ONNXRT, TensorFlow, LLM Optimization, CUDA, C/C++, Python, ROS2</p>
+        </div>
 
-    <article class="blog-card">
-      <h3>Why Product Managers Should Understand Systems</h3>
-      <p class="meta">Product • Engineering</p>
-      <p>
-        How deep technical context leads to better roadmap and trade-offs.
-      </p>
-    </article>
-  </div>
+        <div class="skill-card">
+            <h3>Hardware & Deployment</h3>
+            <p>CPU Servers, Jetson Orin/Xavier, TI TDA4VM, AWS, Azure, GCP, Linux</p>
+        </div>
+    </div>
 </section>
 
-<section id="contact" class="section contact">
-  <h2>Contact</h2>
-  <p>Email: <strong>Ramaseshan M S</strong></p>
-  <p>GitHub: ramseshu1</p>
+<section class="section">
+    <h2>Education</h2>
+    <div class="card">
+        <h3>B.Tech – Electrical and Electronics</h3>
+        <span>SASTRA Deemed University | 2015 – 2019</span>
+    </div>
+    <div class="card">
+        <h3>CBSE Class 12</h3>
+        <span>2013 – 2015</span>
+    </div>
 </section>
 
 <footer>
-  <p>© 2025 Ramaseshan Subramanian</p>
+    <p>© 2025 Ramaseshan Subramanian</p>
 </footer>
 
 <script src="script.js"></script>
