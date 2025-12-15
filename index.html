@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Ramaseshan Subramanian | Portfolio</title>
     <link rel="stylesheet" href="style.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
@@ -27,7 +28,6 @@
                 <a href="technical.html">Achievements ▾</a>
             </li>
 
-            <!-- Replace resume.pdf with your public PDF link -->
             <li><a href="resume.pdf" target="_blank" class="resume-btn">Resume</a></li>
         </ul>
     </nav>
@@ -41,7 +41,6 @@
         AI optimization on CPU servers and edge devices, passionate about 
         building user-centric, high-impact products.
     </p>
-
     <div class="socials">
         <a href="mailto:your-email@gmail.com">Email</a>
         <a href="https://www.linkedin.com/in/ramaseshan-subramanian/" target="_blank">LinkedIn</a>
@@ -51,7 +50,6 @@
 
 <section id="experience" class="section">
     <h2>Experience</h2>
-
     <div class="card">
         <h3>Senior Software Engineer (AI)</h3>
         <span>Multicoreware Inc Pvt Ltd | May 2025 – Present</span>
@@ -63,7 +61,6 @@
             <li>Migrated build systems to CMake and shipped manylinux wheels.</li>
         </ul>
     </div>
-
     <div class="card">
         <h3>Software Engineer (AI)</h3>
         <span>Multicoreware Inc Pvt Ltd | Jan 2023 – Apr 2025</span>
@@ -74,7 +71,6 @@
             <li>Led live Computer Vision system for EVs.</li>
         </ul>
     </div>
-
     <div class="card">
         <h3>IoT Product Manager – Jr. Innovator</h3>
         <span>Indicold, Kailash Agro Pvt Ltd | Apr 2021 – Oct 2021</span>
@@ -88,18 +84,15 @@
 
 <section id="skills" class="section">
     <h2>Skills</h2>
-
     <div class="skills-grid">
         <div class="skill-card">
             <h3>Product Management</h3>
             <p>Roadmapping, GTM Strategy, Agile, Jira, Confluence, Competitive Analysis</p>
         </div>
-
         <div class="skill-card">
             <h3>AI & Software</h3>
             <p>PyTorch, ONNXRT, TensorFlow, LLM Optimization, CUDA, C/C++, Python, ROS2</p>
         </div>
-
         <div class="skill-card">
             <h3>Hardware & Deployment</h3>
             <p>CPU Servers, Jetson Orin/Xavier, TI TDA4VM, AWS, Azure, GCP, Linux</p>
@@ -123,14 +116,11 @@
     <p>© 2025 Ramaseshan Subramanian</p>
 </footer>
 
-<script src="script.js"></script>
-
-
 <script src="blogs-list.js"></script>
 <script>
 const dropdown = document.getElementById("blogs-dropdown");
 
-// Add blog items
+// Populate blogs dropdown
 blogs.forEach(blog => {
     const li = document.createElement("li");
     const a = document.createElement("a");
@@ -143,7 +133,7 @@ blogs.forEach(blog => {
 // Add "More" at the bottom
 const moreLi = document.createElement("li");
 const moreA = document.createElement("a");
-moreA.href = "all-blogs.html"; // optional page listing all blogs
+moreA.href = "all-blogs.html"; 
 moreA.textContent = "More";
 moreLi.appendChild(moreA);
 dropdown.appendChild(moreLi);

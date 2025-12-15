@@ -1,40 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Blogs | Ramaseshan</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Ramaseshan</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
 <header>
-    <nav class="navbar">
-        <div class="logo">Ramaseshan</div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-        </ul>
-    </nav>
+  <!-- Your navbar here -->
 </header>
 
-<section class="section">
-    <h2>✍️ Write a New Blog</h2>
+<main>
+  <h1>Blog</h1>
+  <!-- THIS is where the Markdown content will appear -->
+  <div id="blog-content"></div>
+</main>
 
-    <input id="title" type="text" placeholder="Blog Title" style="width:100%;padding:10px;margin-bottom:10px">
+<footer>
+  <p>© 2025 Ramaseshan Subramanian</p>
+</footer>
 
-    <textarea id="content" rows="8"
-        placeholder="Paste your blog content here (from Google Docs)"
-        style="width:100%;padding:10px"></textarea>
-
-    <button onclick="addBlog()" style="margin-top:10px" class="resume-btn">
-        Publish Blog
-    </button>
-</section>
-
-<section class="section">
-    <h2>📚 All Blogs</h2>
-    <div id="blogs"></div>
-</section>
-
-<script src="blog.js"></script>
+<script src="blogs-list.js"></script>
+<script src="blog-loader.js"></script>
 </body>
 </html>
