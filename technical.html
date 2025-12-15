@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Achievements | Ramaseshan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">Ramaseshan</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Technical ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="technical.html">Technical Achievements</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<section class="section">
+    <h2>Technical Achievements</h2>
+
+    <div class="card">
+        <h3>BEV-Centric Perception</h3>
+        <ul>
+            <li>Integrated BEVDet into Autoware Universe and ported BEVFormer to C++ for deterministic, real-time, memory-efficient embedded execution.</li>
+            <li>Standardized ROS2 message schemas, TF frames, and middleware interfaces.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Multi-Sensor Fusion & GPU Acceleration</h3>
+        <ul>
+            <li>Optimized CUDA kernels and rclcpp nodes, offloading pre/post-processing to the GPU.</li>
+            <li>Achieved single-digit millisecond latency, higher FPS/point-cloud throughput, and ~3× speedups on Jetson.</li>
+            <li>Ported ORB-SLAM3 to TI TDA4VM.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Systems Performance</h3>
+        <ul>
+            <li>Developed SIMD-vectorized, cache/NUMA-aware pipelines on EPYC-class servers.</li>
+            <li>Fused transformer primitives (SDPA, FlashAttention, QKV packing) and GEMM/BMM pipelines via OneDNN Graph/TorchScript to reduce HBM traffic and launch overhead.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Production Inference & Benchmarking</h3>
+        <ul>
+            <li>Operated vLLM, Ollama, and llama.cpp with paged KV caches, heterogeneous offload, and streaming tokenization to meet SLOs.</li>
+            <li>Built automated accuracy/performance tooling (mAP, latency, FPS) across bf16/fp32.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Toolchain & Reliability</h3>
+        <ul>
+            <li>Migrated Make → CMake for hermetic, cross-platform artifacts (RPATH, ABI discipline, deterministic symbol resolution).</li>
+            <li>Shipped manylinux wheels with fbgemm and CPU feature dispatch.</li>
+            <li>Curated dependencies and symbols to eliminate runtime linker issues.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Robotics Leadership</h3>
+        <ul>
+            <li>Led a robotics team in developing a Telepresence robot for warehouse operations.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>WebRTC Platform Development</h3>
+        <ul>
+            <li>Built a Google Meet/Teams-like WebRTC platform and hosted it on a Raspberry Pi server during the COVID-19 lockdown.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>IoT Product Development</h3>
+        <ul>
+            <li>Led a team in developing IoT products for warehouse management.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Volunteering</h3>
+        <ul>
+            <li>Co-founded an inter-state volunteer effort to help COVID-affected patients access hospital beds, vaccinations, and medicines across Tamil Nadu.</li>
+            <li>Developed and tested technologies (Specialized App, Website, Social Media Cell, Chatbots) to address pandemic challenges.</li>
+            <li>Featured in a leading Tamil Nadu newspaper and recognized by the District Collector and Corporation Commissioner of Thanjavur.</li>
+            <li>Continued pandemic preparedness efforts immediately after the second wave ended.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Technical Skills</h3>
+        <ul>
+            <li><strong>Machine Learning / Data Science:</strong> NumPy, Matplotlib, Pandas, SpaCy, scikit-learn, QuantLib, TensorFlow, PyTorch</li>
+            <li><strong>Systems & DevOps:</strong> Ubuntu Server, Nginx, Port Forwarding, Proxy Server, Web Hosting, Encryption (Let’s Encrypt)</li>
+            <li><strong>IoT & Robotics:</strong> MQTT, Autodesk Fusion 360, Webots, Raspberry Pi, NodeMCU (ESP8266/ESP32), Arduino Microcontrollers</li>
+        </ul>
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2025 Ramaseshan Subramanian</p>
+</footer>
+
+</body>
+</html>
