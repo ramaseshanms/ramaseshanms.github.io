@@ -2,69 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ramaseshan Subramanian | Product Manager</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <header>
-    <nav>
-      <h1 class="logo">YourName</h1>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav class="navbar">
+    <h1 class="logo">Ramaseshan S</h1>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#blogs">Blogs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <section class="hero">
-    <h2>Hello, I'm <span>Your Name</span></h2>
-    <p>Web Developer | Designer | Freelancer</p>
-    <button onclick="scrollToSection('contact')">Hire Me</button>
-  </section>
+<section id="home" class="hero">
+  <h2>Ramaseshan Subramanian</h2>
+  <p>
+    Product Manager • AI Systems Engineer • Edge & Cloud
+  </p>
+  <div class="hero-links">
+    <a href="https://github.com/ramseshu1" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/ramaseshan-subramanian" target="_blank">LinkedIn</a>
+  </div>
+</section>
 
-  <section id="about" class="section">
-    <h2>About Me</h2>
+<!-- ================= RESUME ================= -->
+<section id="resume" class="section">
+  <h2>Resume</h2>
+
+  <div class="resume-block">
+    <h3>Profile Summary</h3>
     <p>
-      I am a passionate web developer who creates modern, responsive websites
-      and web applications using HTML, CSS, and JavaScript.
+      Highly motivated software professional with 3.5+ years of experience in
+      AI optimization across CPU servers and edge devices (Jetson Orin, Xavier,
+      TI TDA4VM). Seeking to leverage strong technical depth and user-centric
+      thinking to drive high-impact product development as a Product Manager.
     </p>
-  </section>
+  </div>
 
-  <section id="projects" class="section">
-    <h2>Projects</h2>
-    <div class="projects-container">
-      <div class="project-card">
-        <h3>Project One</h3>
-        <p>Description of your project.</p>
-      </div>
-      <div class="project-card">
-        <h3>Project Two</h3>
-        <p>Description of your project.</p>
-      </div>
-      <div class="project-card">
-        <h3>Project Three</h3>
-        <p>Description of your project.</p>
-      </div>
+  <div class="resume-block">
+    <h3>Experience</h3>
+
+    <div class="job">
+      <h4>Senior Software Engineer (AI) — Multicoreware Inc</h4>
+      <span>May 2025 – Present | Chennai, India</span>
+      <ul>
+        <li>Integrated BEVDet into Autoware Universe and ported BEVFormer to C++ for deterministic embedded execution.</li>
+        <li>Optimized CUDA kernels and ROS2 pipelines achieving ~3× speedups on Jetson platforms.</li>
+        <li>Drove SIMD-vectorized, NUMA-aware pipelines on EPYC servers.</li>
+        <li>Built production inference pipelines using vLLM, ollama, and llama.cpp.</li>
+        <li>Migrated Make → CMake and shipped manylinux wheels with CPU feature dispatch.</li>
+      </ul>
     </div>
-  </section>
 
-  <section id="contact" class="section">
-    <h2>Contact Me</h2>
-    <form id="contactForm">
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Your Email" required />
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
+    <div class="job">
+      <h4>Software Engineer (AI) — Multicoreware Inc</h4>
+      <span>Jan 2023 – Apr 2025</span>
+      <ul>
+        <li>Accelerated a LiDAR-based ROS2 pre-crash system by 300%.</li>
+        <li>Ported collision alert and surveillance systems to Jetson Orin & Xavier.</li>
+        <li>Led development of a live Computer Vision system for EVs.</li>
+        <li>Deployed neural networks on TI TDA4VM using C7x DSP acceleration.</li>
+      </ul>
+    </div>
 
-  <footer>
-    <p>© 2025 Your Name. All rights reserved.</p>
-  </footer>
+    <div class="job">
+      <h4>IoT Product Manager (Jr. Innovator) — Indicold</h4>
+      <span>Apr 2021 – Oct 2021 | Gurugram, India</span>
+      <ul>
+        <li>Acted as end-to-end product owner for IoT warehouse solutions.</li>
+        <li>Initiated and built the robotics division.</li>
+        <li>Designed telepresence robots and multiple IoT product demos.</li>
+        <li>Worked closely with customers and cross-functional teams.</li>
+      </ul>
+    </div>
+  </div>
 
-  <script src="script.js"></script>
+  <div class="resume-block">
+    <h3>Skills</h3>
+    <p>
+      <strong>Product:</strong> Roadmapping, GTM, Agile, Jira, User Stories, Competitive Analysis<br/>
+      <strong>AI/ML:</strong> PyTorch, ONNXRT, TensorFlow, LLM Optimization, CUDA, ROS2, Autoware<br/>
+      <strong>Systems:</strong> CPU Servers, Jetson Orin/Xavier, TI TDA4VM, Linux, Cloud
+    </p>
+  </div>
+
+  <div class="resume-block">
+    <h3>Education</h3>
+    <p>
+      <strong>B.Tech – Electrical & Electronics</strong><br/>
+      SASTRA Deemed University (2015–2019)
+    </p>
+  </div>
+</section>
+
+<!-- ================= BLOGS ================= -->
+<section id="blogs" class="section">
+  <h2>Blogs</h2>
+
+  <div class="blog-container">
+    <article class="blog-card">
+      <h3>From Systems Engineer to Product Manager</h3>
+      <p class="meta">Product • Career</p>
+      <p>
+        Lessons learned transitioning from low-level AI optimization
+        to product ownership and strategy.
+      </p>
+    </article>
+
+    <article class="blog-card">
+      <h3>Optimizing LLM Inference on Edge Devices</h3>
+      <p class="meta">AI • Systems</p>
+      <p>
+        Practical insights on vLLM, KV caching, and heterogeneous offload.
+      </p>
+    </article>
+
+    <article class="blog-card">
+      <h3>Why Product Managers Should Understand Systems</h3>
+      <p class="meta">Product • Engineering</p>
+      <p>
+        How deep technical context leads to better roadmap and trade-offs.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section id="contact" class="section contact">
+  <h2>Contact</h2>
+  <p>Email: <strong>Ramaseshan M S</strong></p>
+  <p>GitHub: ramseshu1</p>
+</section>
+
+<footer>
+  <p>© 2025 Ramaseshan Subramanian</p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
