@@ -17,17 +17,14 @@
             <li><a href="#skills">Skills</a></li>
 
             <li class="dropdown">
-                <a href="blog.html">Blogs ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="blog.html">All Blogs</a></li>
+                <a href="#">Blogs ▾</a>
+                <ul class="dropdown-menu" id="blogs-dropdown">
+                    <!-- Blogs will be injected here -->
                 </ul>
             </li>
 
             <li class="dropdown">
-                <a href="#">Experience ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="technical.html">Experience</a></li>
-                </ul>
+                <a href="technical.html">Achievements ▾</a>
             </li>
 
             <!-- Replace resume.pdf with your public PDF link -->
@@ -127,5 +124,30 @@
 </footer>
 
 <script src="script.js"></script>
+
+
+<script src="blogs-list.js"></script>
+<script>
+const dropdown = document.getElementById("blogs-dropdown");
+
+// Add blog items
+blogs.forEach(blog => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = blog.file;
+    a.textContent = blog.title;
+    li.appendChild(a);
+    dropdown.appendChild(li);
+});
+
+// Add "More" at the bottom
+const moreLi = document.createElement("li");
+const moreA = document.createElement("a");
+moreA.href = "all-blogs.html"; // optional page listing all blogs
+moreA.textContent = "More";
+moreLi.appendChild(moreA);
+dropdown.appendChild(moreLi);
+</script>
+
 </body>
 </html>

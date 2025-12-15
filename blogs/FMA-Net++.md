@@ -1,0 +1,16 @@
+The paper proposes FMA-Net++, a new deep learning framework for jointly performing video super-resolution and deblurring that explicitly accounts for both motion and dynamically varying exposure in real-world videos.
+
+## Problem and motivation
+The work targets restoration of sharp high-resolution videos from blurry low-resolution inputs in realistic settings where camera auto‑exposure changes frame by frame, causing spatio‑temporally varying blur that existing methods with fixed exposure assumptions cannot model well. The authors also highlight limits of common temporal modeling strategies: sliding‑window methods have limited temporal receptive fields, while recurrent models capture long‑range context but are hard to parallelize.
+
+## Proposed architecture
+FMA-Net++ uses a sequence‑level design built from Hierarchical Refinement with Bidirectional Propagation (HRBP) blocks, which aggregate information from increasingly distant past and future frames without sequential dependence, enabling parallel processing and large temporal receptive fields. Within each HRBP, an Exposure Time‑aware Modulation (ETM) layer injects per‑frame exposure embeddings and a multi‑attention module combines self‑attention with degradation‑aware attention that conditions restoration on estimated degradation kernels.
+
+## Degradation and restoration design
+The framework decouples degradation modeling from restoration via two subnetworks: a Degradation Learning Network (NetD) and a Restoration Network (NetR), both guided by a pretrained exposure time‑aware feature extractor (ETE). NetD estimates motion and per‑pixel, exposure‑aware degradation kernels using an exposure‑aware extension of Flow‑Guided Dynamic Filtering (FGDF), while NetR uses these priors plus ETM to restore sharp HR frames by predicting residuals on top of bilinearly upsampled inputs.
+
+## Benchmarks, training, and results
+To evaluate under realistic exposure variations, the authors introduce two new benchmarks derived from REDS: REDS‑ME with multiple fixed exposure levels and REDS‑RE with randomly mixed exposure levels across time, and also test on GoPro and real videos. Trained only on synthetic data, FMA-Net++ achieves state‑of‑the‑art PSNR, SSIM, temporal consistency (tOF), and no‑reference quality scores compared to recent VSR, deblurring, blind VSR, and joint VSRDB methods, while being more efficient thanks to the hierarchical, parallel HRBP design.
+
+## Ablations and conclusions
+Ablation studies show that the hierarchical temporal modeling, the exposure‑aware ETE/ETM pipeline, the degradation‑aware attention, and the asymmetric (lightweight) upsampling design all contribute to performance and robustness, especially under dynamically changing exposure and on out‑of‑distribution data. The authors conclude that explicit exposure‑aware modeling combined with sequence‑level temporal architecture enables FMA-Net++ to generalize well to challenging real‑world videos and deliver superior restoration quality and speed.
