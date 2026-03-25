@@ -63,23 +63,18 @@
     return;
   }
 
-  // Try writing/ folder first, then blogs/ for backward compatibility
-  const paths = [`writing/${slug}.md`, `blogs/${slug}.md`];
-
   async function tryLoad() {
-    for (const path of paths) {
-      try {
-        const res = await fetch(path);
-        if (res.ok) {
-          const md = await res.text();
-          renderArticle(md, slug);
-          return;
-        }
-      } catch(e) {}
-    }
+    try {
+      const res = await fetch(`writing/${slug}.md`);
+      if (res.ok) {
+        const md = await res.text();
+        renderArticle(md, slug);
+        return;
+      }
+    } catch(e) {}
     document.getElementById('article-title').textContent = 'Article not found';
     document.getElementById('article-body').innerHTML =
-      `<p>Could not find <code>${slug}.md</code>. <a href="index.html#writing">Back to writing</a>.</p>`;
+      `<p>Could not find <code>writing/${slug}.md</code>. <a href="index.html#writing">Back to writing</a>.</p>`;
   }
 
   function renderArticle(md, slug) {
