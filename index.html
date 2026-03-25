@@ -1,150 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Ramaseshan Subramanian | Portfolio</title>
-    <link rel="stylesheet" href="style.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ramaseshan Subramanian — AI Systems Engineer</title>
+  <meta name="description" content="Senior AI Systems Engineer specializing in low-level C++/CUDA inference, Vulkan compute, and on-device LLM optimization.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-    <nav class="navbar">
-        <div class="logo">Ramaseshan</div>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#skills">Skills</a></li>
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#" class="nav__logo">ram<span>.</span></a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav__mobile-toggle" id="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</nav>
 
-            <li class="dropdown">
-                <a href="#">Blogs ▾</a>
-                <ul class="dropdown-menu" id="blogs-dropdown">
-                    <!-- Blogs will be injected here -->
-                </ul>
-            </li>
-
-            <li class="dropdown">
-                <a href="technical.html">Achievements ▾</a>
-            </li>
-
-            <li><a href="resume.pdf" target="_blank" class="resume-btn">Resume</a></li>
-        </ul>
-    </nav>
-</header>
-
+<!-- Hero -->
 <section class="hero">
-    <div class="hero-content">
-        <div class="hero-text">
-            <h1>Ramaseshan Subramanian</h1>
-            <h2>Product Manager | AI & Embedded Systems</h2>
-            <p>
-                Highly motivated software professional with 3.5+ years of experience in 
-                AI optimization on CPU servers and edge devices, passionate about 
-                building user-centric, high-impact products.
-            </p>
-            <div class="socials">
-                <a href="mailto:your-email@gmail.com">Email</a>
-                <a href="https://www.linkedin.com/in/ramaseshan-subramanian/" target="_blank">LinkedIn</a>
-                <a href="https://github.com/ramseshu1" target="_blank">GitHub</a>
-            </div>
+  <div class="hero__bg"></div>
+  <div class="hero__grid"></div>
+  <div class="container">
+    <div class="hero__content">
+      <div class="hero__text">
+        <div class="hero__status">
+          <span class="dot"></span>
+          Open to new opportunities
         </div>
-        <div class="hero-image">
-            <img src="images/profile.jpg" alt="Profile Picture">
+        <h1 class="hero__title">
+          I make AI run<br><span class="gradient">fast on real hardware.</span>
+        </h1>
+        <p class="hero__subtitle">
+          Senior AI Systems Engineer. I optimize LLM inference at the metal &mdash;
+          CUDA kernels, ARM NEON intrinsics, Vulkan compute shaders, quantization pipelines.
+          From 300% speedups on NVIDIA Jetson to building a Vulkan LLM runtime from scratch.
+        </p>
+        <div class="hero__actions">
+          <a href="resume.pdf" class="btn btn--primary" target="_blank">Resume &darr;</a>
+          <a href="https://github.com/ramaseshanms" class="btn btn--outline" target="_blank">GitHub &nearr;</a>
         </div>
+        <div class="metrics">
+          <div>
+            <div class="metric__value">3.5+</div>
+            <div class="metric__label">Years in AI Systems</div>
+          </div>
+          <div>
+            <div class="metric__value">300%</div>
+            <div class="metric__label">Best Perf Improvement</div>
+          </div>
+          <div>
+            <div class="metric__value">9</div>
+            <div class="metric__label">Quant Formats Shipped</div>
+          </div>
+          <div>
+            <div class="metric__value">151</div>
+            <div class="metric__label">tok/s (Q4_HQQ, llama.cpp)</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__photo">
+        <img src="images/profile.jpg" alt="Ramaseshan Subramanian" loading="eager">
+      </div>
     </div>
+  </div>
 </section>
 
-<section id="experience" class="section">
-    <h2>Experience</h2>
-    <div class="card">
-        <h3>Senior Software Engineer (AI)</h3>
-        <span>Multicoreware Inc Pvt Ltd | May 2025 – Present</span>
-        <ul>
-            <li>Integrated BEVDet into Autoware Universe and ported BEVFormer to C++.</li>
-            <li>Optimized CUDA kernels achieving ~3× speedup on Jetson.</li>
-            <li>Vectorized transformer pipelines using OneDNN and TorchScript.</li>
-            <li>Operated vLLM, llama.cpp with paged KV caches to meet SLOs.</li>
-            <li>Migrated build systems to CMake and shipped manylinux wheels.</li>
+<!-- Experience -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal">Experience</div>
+    <h2 class="reveal">Where I've worked</h2>
+    <div class="timeline" style="margin-top: 3rem;">
+
+      <div class="timeline__item reveal">
+        <div class="timeline__dot"></div>
+        <div class="timeline__header">
+          <div><span class="timeline__role">Senior Software Engineer (AI)</span> <span class="timeline__company">&mdash; MulticoreWare Inc.</span></div>
+          <span class="timeline__date">Jan 2023 &ndash; Dec 2025</span>
+        </div>
+        <ul class="timeline__bullets">
+          <li>Engineered 300% performance gains and single-digit ms inference latency on NVIDIA Jetson by optimizing CUDA kernels and C++ runtimes &mdash; directly enabled a Flash LIDAR partner to secure a production contract with Rivian.</li>
+          <li>Architected high-performance LLM inference pipelines on AMD EPYC servers using NUMA-aware scheduling and custom SIMD vectorization (AVX2/AVX-512), contributing to platform competitiveness and commercial adoption for AMD.</li>
+          <li>Integrated BEVDet and BEVFormer perception models into Autoware Universe for real-time sensor fusion, delivering deterministic latency and ~3x pipeline speed increase for autonomous vehicle stacks.</li>
+          <li>Built automated accuracy and performance benchmarking frameworks to validate bf16/fp32 regressions, preventing latency and quality degradation in production inference releases.</li>
+          <li>Led a research team porting x86 deep learning pipelines to ARM and DSP-accelerated edge devices, redesigning memory execution models for constrained hardware &mdash; efforts garnered strategic recognition from a premier Indian automotive manufacturer.</li>
         </ul>
-    </div>
-    <div class="card">
-        <h3>Software Engineer (AI)</h3>
-        <span>Multicoreware Inc Pvt Ltd | Jan 2023 – Apr 2025</span>
-        <ul>
-            <li>Optimized LIDAR ROS2 pre-crash system by 300%.</li>
-            <li>Ported AI systems to Nvidia Jetson Orin and Xavier.</li>
-            <li>Built gesture recognition using Infineon RADAR.</li>
-            <li>Led live Computer Vision system for EVs.</li>
+      </div>
+
+      <div class="timeline__item reveal">
+        <div class="timeline__dot"></div>
+        <div class="timeline__header">
+          <div><span class="timeline__role">IoT Product Manager & AI Engineer</span> <span class="timeline__company">&mdash; Indicold</span></div>
+          <span class="timeline__date">Apr 2021 &ndash; Oct 2021</span>
+        </div>
+        <ul class="timeline__bullets">
+          <li>Led end-to-end development of telepresence robotics and warehouse automation IoT solutions, owning edge perception, networking, and control systems.</li>
+          <li>Designed and deployed reliable edge architectures integrating real-time sensor processing and decision-making for autonomous operations with severe latency constraints.</li>
+          <li>Built a secure, WebRTC-based video conferencing platform on Raspberry Pi hardware for remote operations during the COVID-19 pandemic.</li>
         </ul>
+      </div>
+
     </div>
-    <div class="card">
-        <h3>IoT Product Manager – Jr. Innovator</h3>
-        <span>Indicold, Kailash Agro Pvt Ltd | Apr 2021 – Oct 2021</span>
-        <ul>
-            <li>Owned end-to-end product development for IoT warehouse solutions.</li>
-            <li>Designed telepresence robot for warehouses.</li>
-            <li>Initiated robotics division and built IoT demos.</li>
-        </ul>
-    </div>
+  </div>
 </section>
 
-<section id="skills" class="section">
-    <h2>Skills</h2>
-    <div class="skills-grid">
-        <div class="skill-card">
-            <h3>Product Management</h3>
-            <p>Roadmapping, GTM Strategy, Agile, Jira, Confluence, Competitive Analysis</p>
+<!-- Projects -->
+<section id="projects" style="background: var(--bg-raised);">
+  <div class="container">
+    <div class="section-label reveal">Projects</div>
+    <h2 class="reveal">What I've built</h2>
+    <div class="grid-2" style="margin-top: 3rem;">
+
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-card__icon">&#9889;</div>
+        <h3 class="project-card__title">Viking &mdash; Vulkan LLM Runtime for Android</h3>
+        <p class="project-card__desc">
+          Built a from-scratch Vulkan 1.1 compute inference engine for on-device LLM inference.
+          9 GGUF quantization shaders (Q4_0 through IQ4_XS), thermal governor, paged KV cache,
+          and Kotlin SDK. Discovered Qualcomm's 6ms Vulkan fence overhead, pivoted to NEON SDOT
+          achieving 11.2 tok/s.
+        </p>
+        <div class="project-card__tags">
+          <span class="tag">C++20</span><span class="tag">Vulkan</span><span class="tag">GLSL</span>
+          <span class="tag">ARM NEON</span><span class="tag">GGUF</span><span class="tag">Kotlin</span><span class="tag">Android NDK</span>
         </div>
-        <div class="skill-card">
-            <h3>AI & Software</h3>
-            <p>PyTorch, ONNXRT, TensorFlow, LLM Optimization, CUDA, C/C++, Python, ROS2</p>
+        <div class="project-card__stats">
+          <div><span class="project-card__stat-value">0.50&rarr;11.2</span><span class="project-card__stat-label">tok/s journey</span></div>
+          <div><span class="project-card__stat-value">9</span><span class="project-card__stat-label">quant shaders</span></div>
+          <div><span class="project-card__stat-value">37</span><span class="project-card__stat-label">security fixes</span></div>
         </div>
-        <div class="skill-card">
-            <h3>Hardware & Deployment</h3>
-            <p>CPU Servers, Jetson Orin/Xavier, TI TDA4VM, AWS, Azure, GCP, Linux</p>
+        <div class="project-card__link" style="margin-top:1rem;">
+          <a href="page.html?slug=vulkan-llm-runtime">Read the deep-dive &rarr;</a>
         </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-card__icon">&#128293;</div>
+        <h3 class="project-card__title">llama.cpp Q4_HQQ Quantization Engine</h3>
+        <p class="project-card__desc">
+          Integrated the Q4_HQQ quantization format deep into llama.cpp with custom AVX2 and NEON
+          SIMD kernels. Built a fast Python GGUF converter and enabled KV cache quantization.
+          3.3x model footprint reduction with near-lossless quality.
+        </p>
+        <div class="project-card__tags">
+          <span class="tag">C++</span><span class="tag">CUDA</span><span class="tag">AVX2</span>
+          <span class="tag">NEON</span><span class="tag">llama.cpp</span><span class="tag">Python</span>
+        </div>
+        <div class="project-card__stats">
+          <div><span class="project-card__stat-value">151</span><span class="project-card__stat-label">tok/s</span></div>
+          <div><span class="project-card__stat-value">3.3x</span><span class="project-card__stat-label">compression</span></div>
+          <div><span class="project-card__stat-value">-1.06%</span><span class="project-card__stat-label">perplexity vs Q4_0</span></div>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-3">
+        <div class="project-card__icon">&#128065;</div>
+        <h3 class="project-card__title">ORB-SLAM3 Edge Deployment on DSP</h3>
+        <p class="project-card__desc">
+          Redesigned ORB-SLAM3's memory architecture and execution pipeline for TI TDA4VM DSP hardware.
+          Achieved ~3x rendering and localization speedup, unlocking real-time visual SLAM on
+          constrained embedded devices.
+        </p>
+        <div class="project-card__tags">
+          <span class="tag">C++</span><span class="tag">ROS2</span><span class="tag">Computer Vision</span>
+          <span class="tag">TI TDA4VM</span><span class="tag">DSP</span>
+        </div>
+        <div class="project-card__stats">
+          <div><span class="project-card__stat-value">~3x</span><span class="project-card__stat-label">speedup</span></div>
+          <div><span class="project-card__stat-value">Real-time</span><span class="project-card__stat-label">SLAM on edge</span></div>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-4">
+        <div class="project-card__icon">&#128663;</div>
+        <h3 class="project-card__title">BEV Perception for Autonomous Vehicles</h3>
+        <p class="project-card__desc">
+          Integrated BEVDet and BEVFormer perception models into Autoware Universe.
+          Real-time multi-sensor fusion with deterministic latency on NVIDIA Jetson Orin.
+          ~3x pipeline throughput increase for production AV stacks.
+        </p>
+        <div class="project-card__tags">
+          <span class="tag">PyTorch</span><span class="tag">CUDA</span><span class="tag">ROS2</span>
+          <span class="tag">Autoware</span><span class="tag">Jetson Orin</span>
+        </div>
+        <div class="project-card__stats">
+          <div><span class="project-card__stat-value">~3x</span><span class="project-card__stat-label">throughput</span></div>
+          <div><span class="project-card__stat-value">&lt;10ms</span><span class="project-card__stat-label">latency</span></div>
+        </div>
+      </div>
+
     </div>
+  </div>
 </section>
 
-<section class="section">
-    <h2>Education</h2>
-    <div class="card">
-        <h3>B.Tech – Electrical and Electronics</h3>
-        <span>SASTRA Deemed University | 2015 – 2019</span>
+<!-- Skills -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label reveal">Skills</div>
+    <h2 class="reveal">What I work with</h2>
+    <div class="grid-3" style="margin-top: 3rem;">
+
+      <div class="skill-group reveal reveal-delay-1">
+        <h3 class="skill-group__title">Languages & Low-Level</h3>
+        <div class="skill-pills">
+          <span class="skill-pill">C++20</span><span class="skill-pill">CUDA</span>
+          <span class="skill-pill">GLSL / SPIR-V</span><span class="skill-pill">Python</span>
+          <span class="skill-pill">Kotlin</span><span class="skill-pill">Bash</span>
+          <span class="skill-pill">ARM Assembly</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-2">
+        <h3 class="skill-group__title">AI / ML Inference</h3>
+        <div class="skill-pills">
+          <span class="skill-pill">llama.cpp</span><span class="skill-pill">vLLM</span>
+          <span class="skill-pill">ONNX Runtime</span><span class="skill-pill">PyTorch</span>
+          <span class="skill-pill">TensorFlow Lite</span><span class="skill-pill">ZenDNN</span>
+          <span class="skill-pill">Quantization (GGUF/GPTQ/AWQ)</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-3">
+        <h3 class="skill-group__title">Hardware & Optimization</h3>
+        <div class="skill-pills">
+          <span class="skill-pill">Vulkan Compute</span><span class="skill-pill">OpenCL</span>
+          <span class="skill-pill">AVX2 / AVX-512</span><span class="skill-pill">ARM NEON / SDOT</span>
+          <span class="skill-pill">NUMA</span><span class="skill-pill">KV Cache</span>
+          <span class="skill-pill">Kernel Fusion</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-1">
+        <h3 class="skill-group__title">Platforms</h3>
+        <div class="skill-pills">
+          <span class="skill-pill">NVIDIA Jetson (Orin/Xavier)</span>
+          <span class="skill-pill">AMD EPYC</span><span class="skill-pill">Qualcomm Adreno</span>
+          <span class="skill-pill">TI TDA4VM</span><span class="skill-pill">Raspberry Pi</span>
+          <span class="skill-pill">Android NDK</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-2">
+        <h3 class="skill-group__title">Tools & Infrastructure</h3>
+        <div class="skill-pills">
+          <span class="skill-pill">CMake</span><span class="skill-pill">Git</span>
+          <span class="skill-pill">CI/CD</span><span class="skill-pill">ADB</span>
+          <span class="skill-pill">Perfetto</span><span class="skill-pill">Gradle</span>
+          <span class="skill-pill">Docker</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-3">
+        <h3 class="skill-group__title">Domain Expertise</h3>
+        <div class="skill-pills">
+          <span class="skill-pill">On-Device LLM Inference</span>
+          <span class="skill-pill">Autonomous Vehicles</span>
+          <span class="skill-pill">Edge AI</span><span class="skill-pill">IoT / Robotics</span>
+          <span class="skill-pill">Product Management</span>
+        </div>
+      </div>
+
     </div>
-    <div class="card">
-        <h3>CBSE Class 12</h3>
-        <span>2013 – 2015</span>
-    </div>
+  </div>
 </section>
 
-<footer>
-    <p>© 2025 Ramaseshan Subramanian</p>
+<!-- Writing -->
+<section id="writing" style="background: var(--bg-raised);">
+  <div class="container">
+    <div class="section-label reveal">Writing</div>
+    <h2 class="reveal">Things I've learned</h2>
+    <div style="margin-top: 3rem;" id="writing-list">
+
+      <a href="page.html?slug=vulkan-llm-runtime" class="writing-card reveal">
+        <div class="writing-card__date">2026-03-25</div>
+        <div class="writing-card__title">
+          What I Learned Building a Vulkan LLM Runtime for Android From Scratch
+          <span class="writing-card__arrow">&rarr;</span>
+        </div>
+        <div class="writing-card__excerpt">
+          I spent weeks building a Vulkan compute inference engine, wrote 9 quantization shaders,
+          and ended up 10x slower than llama.cpp on CPU. Here's what I discovered about mobile GPU
+          dispatch overhead, the 6ms Qualcomm fence, and why NEON SDOT won.
+        </div>
+      </a>
+
+      <a href="page.html?slug=FMA-Net++" class="writing-card reveal">
+        <div class="writing-card__date">2025-12-16</div>
+        <div class="writing-card__title">
+          FMA-Net++: Video Super-Resolution and Deblurring
+          <span class="writing-card__arrow">&rarr;</span>
+        </div>
+        <div class="writing-card__excerpt">
+          Technical summary of the FMA-Net++ architecture for joint video super-resolution and
+          deblurring using flow-guided dynamic modulation.
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label reveal">Contact</div>
+    <h2 class="reveal">Let's talk</h2>
+    <p class="reveal" style="margin-top: 1rem;">
+      I'm looking for my next role in AI systems engineering, inference optimization, or on-device ML.
+      If you're building something that needs to run fast on real hardware, I'd love to hear about it.
+    </p>
+    <div class="contact-row reveal">
+      <a href="mailto:m.s.ramaseshan@gmail.com" class="contact-link">&#9993; m.s.ramaseshan@gmail.com</a>
+      <a href="https://github.com/ramaseshanms" class="contact-link" target="_blank">&#128187; GitHub</a>
+      <a href="https://linkedin.com/in/ramaseshan-subramanian" class="contact-link" target="_blank">&#128188; LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer__links">
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#writing">Writing</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <p class="footer__copy">Ramaseshan Subramanian &copy; 2026</p>
 </footer>
 
-<script src="blogs-list.js"></script>
-<script>
-const dropdown = document.getElementById("blogs-dropdown");
-
-// Populate blogs dropdown
-blogs.forEach(blog => {
-    const li = document.createElement("li");
-    const a = document.createElement("a");
-    a.href = `blog.html?file=${encodeURIComponent(blog.file)}`;
-    a.textContent = blog.title;
-    li.appendChild(a);
-    dropdown.appendChild(li);
-});
-
-// Add "More" at the bottom
-const moreLi = document.createElement("li");
-const moreA = document.createElement("a");
-moreA.href = "all-blogs.html"; 
-moreA.textContent = "More";
-moreLi.appendChild(moreA);
-dropdown.appendChild(moreLi);
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
