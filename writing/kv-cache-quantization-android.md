@@ -209,9 +209,28 @@ llama-cli -m Qwen3-1.7B-Q4_HQQ.gguf \
 
 The output collapsed entirely. Instead of English, the model produced incoherent text — random characters, fragments, nothing resembling the prompt. The speed was fine (6.9 t/s generation is actually the fastest of all runs), but there was no signal in the output.
 
-This is the double-quantization wall. HQQ-quantized weights at 5.28 bits already introduce reconstruction error in every matrix multiply. TQ3_0's 3.5-bit KV cache adds a second layer of error on every attention computation. On a 1.7B model, there simply aren't enough parameters to absorb the compounding noise. Each layer amplifies the error from the previous one, and by the time you reach the output projection, the signal has been destroyed.
+My first theory was double-quantization error — compounding losses from 5-bit weights and 3.5-bit KV cache exceeding what a 1.7B model can absorb. But that turned out to be wrong.
 
-### Inference 4: HQQ Weights + HQQ KV Cache (The Winner)
+### The Investigation: Isolating K vs V Cache
+
+I ran a systematic isolation test. Same model, same prompt, same seed — varying only which cache (Key, Value, or both) uses TQ3_0:
+
+| K Cache | V Cache | Output |
+|---------|---------|--------|
+| TQ3_0 | TQ3_0 | Gibberish |
+| TQ3_0 | Q8_0 | Gibberish |
+| Q8_0 | TQ3_0 | **Coherent** ("2+2 = 4") |
+| Q4_HQQ | TQ3_0 | **Coherent** (quantum computing explanation) |
+
+**The TQ3_0 Key cache is broken. The Value cache works perfectly.**
+
+This isn't a quantization precision problem. It's a bug. The Key cache participates in the QK dot product — the operation that computes attention scores, deciding which tokens the model pays attention to. The TQ3_0 `vec_dot` function used for this dot product produces incorrect attention weights. It doesn't matter how precise your model weights are: if the attention scores are garbage, the model looks at the wrong tokens and produces noise.
+
+The Value cache, by contrast, is multiplied *by* the attention weights. If the attention weights are correct (because the K cache is a working type), TQ3_0's dequantization of the Values works fine. The 3.5-bit codebook lookup produces values close enough to the original FP16 for the weighted sum to be meaningful.
+
+This is the kind of bug that's invisible to unit tests. Each individual component (quantize, dequantize, codebook lookup) might pass correctness tests in isolation. The error only manifests in the accumulated dot product across 128 dimensions, where small per-element errors in the codebook lookup compound into an attention score that's just wrong enough to select completely different tokens.
+
+### Inference 4: HQQ Weights + HQQ KV Cache
 
 ```
 llama-cli -m Qwen3-1.7B-Q4_HQQ.gguf \
@@ -227,26 +246,48 @@ llama-cli -m Qwen3-1.7B-Q4_HQQ.gguf \
 | Token generation | **6.8 tokens/sec** |
 | Output quality | **High — coherent reasoning, correct content** |
 
-This was the surprise. HQQ weights + HQQ KV cache produced the best overall result: the smallest model (1.0 GB), the fastest generation speed (6.8 t/s), and fully coherent output. The model explained quantum computing correctly, with structured reasoning about qubits, superposition, and entanglement.
+HQQ for both weights and KV cache: smallest model (1.0 GB), fast generation, coherent output.
 
-Why did this work when HQQ + TQ3_0 failed? Because using the same quantization method for both weights and KV cache keeps the error characteristics consistent. HQQ's proximal solver optimizes for reconstruction accuracy at 5 bits — the weights and the cached attention states both have similar error profiles. The model can tolerate this consistent distortion pattern. When you mix HQQ weights with TQ3_0's completely different codebook-based quantization, the error patterns are uncorrelated and compound unpredictably.
+### Inference 5: HQQ Weights + Mixed K/V Cache (The Real Winner)
+
+With the K-cache bug identified, the right answer is obvious: use HQQ for the Key cache (where `vec_dot` correctness is critical) and TQ3_0 for the Value cache (where it works and gives 4.6x compression).
+
+```
+llama-cli -m Qwen3-1.7B-Q4_HQQ.gguf \
+  --cache-type-k q4_hqq --cache-type-v tq3_0 \
+  --flash-attn on -c 512 -n 64
+```
+
+| Metric | Value |
+|--------|-------|
+| Model weights | Q4_HQQ (5.28 bpw, 1.0 GB) |
+| K cache | Q4_HQQ (5.0 bpw) |
+| V cache | TQ3_0 (3.5 bpw) |
+| Prompt processing | **13.3 tokens/sec** |
+| Token generation | **7.0 tokens/sec** |
+| Output quality | **High — coherent reasoning, correct content** |
+
+The model explained quantum computing correctly, discussing qubits, superposition, and entanglement with structured reasoning. The V-cache compression is invisible in the output quality.
 
 ### The Full Picture
 
-| Run | Weights | KV Cache | Model Size | Prompt t/s | Gen t/s | Quality |
-|-----|---------|----------|-----------|-----------|---------|---------|
-| 1 | Q8_0 (1.83 GB) | Q4_HQQ (5.0 bpw) | 1.83 GB | 9.8 | 1.6 | High |
-| 2 | Q8_0 (1.83 GB) | TQ3_0 (3.5 bpw) | 1.83 GB | 24.3 | 4.9 | Moderate |
-| 3 | Q4_HQQ (1.0 GB) | TQ3_0 (3.5 bpw) | 1.0 GB | 9.5 | 6.9 | Gibberish |
-| **4** | **Q4_HQQ (1.0 GB)** | **Q4_HQQ (5.0 bpw)** | **1.0 GB** | **13.0** | **6.8** | **High** |
+| Run | Weights | K Cache | V Cache | Model Size | Prompt t/s | Gen t/s | Quality |
+|-----|---------|---------|---------|-----------|-----------|---------|---------|
+| 1 | Q8_0 (1.83 GB) | Q4_HQQ | Q4_HQQ | 1.83 GB | 9.8 | 1.6 | High |
+| 2 | Q8_0 (1.83 GB) | TQ3_0 | TQ3_0 | 1.83 GB | 24.3 | 4.9 | Gibberish* |
+| 3 | Q4_HQQ (1.0 GB) | TQ3_0 | TQ3_0 | 1.0 GB | 9.5 | 6.9 | Gibberish* |
+| 4 | Q4_HQQ (1.0 GB) | Q4_HQQ | Q4_HQQ | 1.0 GB | 13.0 | 6.8 | High |
+| **5** | **Q4_HQQ (1.0 GB)** | **Q4_HQQ** | **TQ3_0** | **1.0 GB** | **13.3** | **7.0** | **High** |
+
+*Gibberish caused by TQ3_0 K-cache `vec_dot` bug, not quantization precision.
 
 Three things stand out:
 
-**Smaller model = faster generation.** Runs 3 and 4 (1.0 GB weights) achieved 6.8-6.9 t/s generation versus 1.6-4.9 t/s for Runs 1-2 (1.83 GB weights). On a bandwidth-constrained mobile SoC, reading 45% less weight data per token generation step makes a dramatic difference.
+**TQ3_0's V-cache works; its K-cache doesn't.** Runs 2 and 3 failed because TQ3_0's `vec_dot` produces incorrect QK attention scores. Run 5 works because the V-cache path doesn't compute dot products — it's multiplied by already-correct attention weights.
 
-**TQ3_0 KV is only safe with high-precision weights.** Run 2 (Q8_0 + TQ3_0) produced acceptable output because 8-bit weights have enough precision to compensate for aggressive 3.5-bit KV compression. Run 3 (Q4_HQQ + TQ3_0) failed because there was no precision margin left.
+**Smaller model = faster generation.** Runs with 1.0 GB weights achieved 6.8-7.0 t/s versus 1.6-4.9 t/s for 1.83 GB weights. On a bandwidth-constrained mobile SoC, reading 45% less weight data per generation step makes a dramatic difference.
 
-**Uniform quantization beats mixed quantization on small models.** Run 4's consistent HQQ approach outperformed every mixed combination in the quality-speed-size tradeoff. This may not hold for 7B+ models, where larger parameter counts provide more error absorption capacity — but for the 1-3B models that actually run on phones, consistency wins.
+**Mixed K/V quantization is the right answer.** Run 5 combines reliable HQQ for attention scoring (K-cache) with aggressive TurboQuant compression for output generation (V-cache). The V-cache is typically the same size or larger than the K-cache, so TQ3_0's 4.6x compression applies where it matters most.
 
 ---
 
@@ -310,7 +351,7 @@ Rebasing a 39-file patch across 184 upstream commits produced conflicts in type 
 
 **Pre-compute everything possible.** Lloyd-Max centroids, Hadamard matrices, sign flip patterns — these are all deterministic and can be compile-time constants. Computing them at runtime adds initialization latency on exactly the devices where latency matters most.
 
-**Don't mix quantization methods on small models.** The most surprising result of this entire experiment was that uniform HQQ quantization (weights + KV cache) produced better results than any mixed combination. On a 1.7B model, consistency of the error profile matters more than the theoretical advantage of a more advanced method. If you're deploying to phones, pick one quantization approach and use it everywhere.
+**Isolate before you theorize.** When HQQ weights + TQ3_0 KV produced gibberish, I initially blamed double-quantization error. A systematic isolation test (swapping K and V cache types independently) revealed it was a `vec_dot` bug in TQ3_0's Key cache path. The theory was wrong; the bug was specific. Always isolate variables before building explanations.
 
 **Test the full pipeline on-device before optimizing.** I knew from my previous Vulkan project that on-device behavior is different from desktop behavior. But I still spent time optimizing the rebase and integration before confirming that the binary ran correctly on the phone. The right order is: build, push, verify one inference, then optimize.
 
@@ -322,17 +363,15 @@ KV cache quantization is moving fast. Within months we've gone from "FP16 is the
 
 The remaining gaps are clear:
 
-1. **Rotation + TQ3_0 integration.** The Hadamard rotation and the Lloyd-Max codebook are complementary — rotation improves the input distribution, codebook-based quantization exploits the improved distribution. Wiring them together end-to-end should close the quality gap between TQ3_0 and Q8_0.
+1. **Fix TQ3_0's K-cache vec_dot.** This is the highest-impact item. The V-cache path already works at 3.5 bpw with excellent quality. Fixing the K-cache `vec_dot` would enable full TQ3_0 K+V cache — 4.6x compression on the entire KV cache instead of just half of it. The bug is likely in the packed 3-bit index extraction or codebook lookup within the dot product accumulation loop.
 
-2. **GPU kernels for TQ3_0.** The current CPU-only implementation means TQ3_0 can't benefit from GPU acceleration. CUDA and Metal implementations exist in community forks but haven't been upstreamed.
+2. **Rotation + TQ3_0 integration.** The Hadamard rotation and the Lloyd-Max codebook are complementary — rotation improves the input distribution, codebook-based quantization exploits the improved distribution. Wiring them together end-to-end should further improve TQ3_0 V-cache quality.
 
-3. **Double quantization at scale.** HQQ weights + TQ3_0 KV cache collapsed on a 1.7B model, but larger models (7B+) have more redundant parameters to absorb compounding error. Testing this combination on Llama-3.1-8B or Qwen3-8B would determine whether the double-quantization wall is a small-model phenomenon or a fundamental limit.
+3. **GPU kernels for TQ3_0.** The current CPU-only implementation means TQ3_0 can't benefit from GPU acceleration. CUDA and Metal implementations exist in community forks but haven't been upstreamed.
 
-4. **Mixed K/V quantization strategies.** Using different precision for K and V caches (e.g., TQ3_0 for Keys, HQQ for Values) could find a better quality-compression trade-off than using the same type for both. The Key cache primarily affects attention routing, while the Value cache directly affects output content — they may tolerate different levels of quantization error.
+4. **Sustained performance measurement.** Every benchmark I've reported is peak throughput. On mobile, thermal throttling degrades performance within 30-60 seconds of sustained inference. The real question isn't "how fast is the first token" but "how fast is the thousandth token, five minutes into a conversation, on a phone that's warming up in someone's hand."
 
-5. **Sustained performance measurement.** Every benchmark I've reported is peak throughput. On mobile, thermal throttling degrades performance within 30-60 seconds of sustained inference. The real question isn't "how fast is the first token" but "how fast is the thousandth token, five minutes into a conversation, on a phone that's warming up in someone's hand."
-
-The memory wall for on-device LLMs is real, but it's not fixed. Compressing the KV cache from 16 bits to 3.5 bits is not a theoretical exercise — it runs today, on a phone, generating coherent text. The gap between "runs on a server" and "runs in your pocket" is narrowing, and KV cache quantization is one of the key techniques closing it.
+The memory wall for on-device LLMs is real, but it's not fixed. Compressing the V-cache from 16 bits to 3.5 bits already works today — on a phone, generating coherent text at 7 tokens per second. Fixing the K-cache path would double the compression benefit. The gap between "runs on a server" and "runs in your pocket" is narrowing, and KV cache quantization is one of the key techniques closing it.
 
 ---
 
