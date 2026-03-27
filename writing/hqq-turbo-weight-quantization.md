@@ -221,7 +221,7 @@ The discussion also noted what's missing: QJL residual correction. Several comme
 
 **For framework developers**: Both the rotation and QJL modules are standalone (pure PyTorch, ~150 lines each) and can be integrated into any quantization pipeline — GPTQ, AWQ, or custom GGUF quantizers. The rotation is especially cheap: for power-of-2 group sizes, it's an O(n log n) in-place transform with zero storage cost.
 
-**For inference engines**: The dequantization path adds latency from QJL reconstruction (regenerating the random projection matrix from seed). On A10G, this adds 3-13ms per layer compared to <1ms for standard HQQ dequantization. The 4x variance is layer-size dependent: a 768x3072 MLP projection generates a larger projection matrix than a 768x768 attention weight, and `torch.randn` cost scales linearly with element count. Caching the projection matrix per layer eliminates the regeneration cost entirely (see "What's Next" below).
+**For inference engines**: The dequantization path adds latency from QJL reconstruction (regenerating the random projection matrix from seed). On A10G, this adds 3-13ms per layer compared to <1ms for standard HQQ dequantization. The 4x variance is layer-size dependent: a 768x3072 MLP projection generates a larger projection matrix than a 768x768 attention weight, and `torch.randn` cost scales linearly with element count. Caching the projection matrix per layer (implemented in the current code) eliminates the regeneration cost, but benchmarking reveals a more fundamental issue: the bottleneck is the dense matmul (S.T @ signs), not the matrix generation. On A10G, a cached 768x768 layer dequantizes in 7.25ms vs 7.86ms uncached (8% speedup). For a Qwen2.5-3B MLP layer (3584x18944), both cached and uncached take ~1.9 seconds — the S.T @ signs matmul dominates completely. The real optimization path is structured random matrices (Hadamard-Rademacher products) that allow O(n log n) projection instead of O(n^2) matmul, or fused CUDA kernels.
 
 ---
 
@@ -229,7 +229,7 @@ The discussion also noted what's missing: QJL residual correction. Several comme
 
 Several directions remain unexplored:
 
-1. **Larger models**: All tested models are under 1.5B parameters. Quantization generally works better at larger scales — the error per weight decreases as the model gets bigger. The relative improvement from rotation+QJL at 7B+ scale needs measurement.
+1. **Larger models**: All tested models are 3B parameters or smaller. Quantization generally works better at larger scales — the error per weight decreases as the model gets bigger. The relative improvement from rotation+QJL at 7B+ scale needs measurement.
 
 2. **Fewer QJL projections**: Using num_projections = group_size/2 or group_size/4 would reduce the overhead from 1.25 to 0.625 or 0.375 bpw. The accuracy tradeoff hasn't been characterized.
 
