@@ -111,7 +111,7 @@ All three modules are standalone — they depend only on PyTorch and can be extr
 
 ## What I Measured
 
-I ran benchmarks on four models across three quantization configurations, measuring WikiText-2 perplexity (test split, 40 sliding windows of 2048 tokens with stride 512) on an NVIDIA A10G GPU. All runs use QJL seed 42. Seed sensitivity results appear later in this section.
+I ran benchmarks on five models (up to 3B parameters) across three quantization configurations, measuring WikiText-2 perplexity (test split, 40 sliding windows of 2048 tokens with stride 512) on an NVIDIA A10G GPU. All runs use QJL seed 42. Seed sensitivity results appear later in this section.
 
 ### The Configurations
 
@@ -229,7 +229,7 @@ The discussion also noted what's missing: QJL residual correction. Several comme
 
 Several directions remain unexplored:
 
-1. **Larger models**: All tested models are 3B parameters or smaller. Quantization generally works better at larger scales — the error per weight decreases as the model gets bigger. The relative improvement from rotation+QJL at 7B+ scale needs measurement.
+1. **Larger models**: All tested models are 3B parameters or smaller (Qwen2.5-7B FP16 baseline was measured at PPL 5.89 but quantization OOMed on 30GB RAM). Quantization generally works better at larger scales — the error per weight decreases as the model gets bigger. The relative improvement from rotation+QJL at 7B+ scale needs measurement.
 
 2. **Fewer QJL projections**: Using num_projections = group_size/2 or group_size/4 would reduce the overhead from 1.25 to 0.625 or 0.375 bpw. The accuracy tradeoff hasn't been characterized.
 
