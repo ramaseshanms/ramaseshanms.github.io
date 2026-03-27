@@ -8,7 +8,7 @@ Weight quantization is the standard way to shrink large language models. Take a 
 
 But push below 4 bits and things break. At 3 bits, models start hallucinating more. At 2 bits, most models produce garbage. The reason is straightforward: you're trying to represent a continuous value with 8 or fewer discrete levels, and the rounding error accumulates across billions of multiplications.
 
-I spent the last few weeks testing whether two techniques from Google's TurboQuant research — originally designed for KV cache compression — could be adapted to improve static weight quantization in the HQQ framework. The idea was to attack the problem from both ends: reduce the error before quantization happens, then correct for what's left after.
+Google's TurboQuant research dropped a few days ago, introducing techniques originally designed for KV cache compression. I wanted to know if two of those techniques could be adapted to improve static weight quantization in the HQQ framework. The idea was to attack the problem from both ends: reduce the error before quantization happens, then correct for what's left after.
 
 The result: 32-45% perplexity reduction at 3-bit quantization across four models, verified on GPU. The code is open source.
 
