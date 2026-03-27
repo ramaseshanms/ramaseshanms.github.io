@@ -241,7 +241,7 @@ Several directions remain unexplored:
 
 ## Source Code
 
-The implementation is available at [github.com/ramaseshanms/hqq_turbo](https://github.com/ramaseshanms/hqq_turbo) on the `feature/hqq-turbo` branch.
+The implementation is available at [github.com/ramaseshanms/hqq_turbo](https://github.com/ramaseshanms/hqq_turbo) on the `main` branch.
 
 Built on top of [HQQ](https://github.com/mobiusml/hqq) by Hicham Badri, Mobius Labs (Apache-2.0).
 
