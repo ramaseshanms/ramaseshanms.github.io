@@ -282,6 +282,19 @@
     <h2 class="reveal">Things I've learned</h2>
     <div style="margin-top: 3rem;" id="writing-list">
 
+      <a href="page.html?slug=hqq-turbo-weight-quantization" class="writing-card reveal">
+        <div class="writing-card__date">2026-03-27</div>
+        <div class="writing-card__title">
+          Cutting LLM Quantization Error in Half: What Happens When You Rotate Weights Before Compressing Them
+          <span class="writing-card__arrow">&rarr;</span>
+        </div>
+        <div class="writing-card__excerpt">
+          I adapted two techniques from Google's TurboQuant &mdash; Hadamard rotation and QJL residual
+          correction &mdash; to improve HQQ weight quantization. 32-45% perplexity reduction at 3-bit
+          across four models. Open source, GPU-verified, and portable to any quantization framework.
+        </div>
+      </a>
+
       <a href="page.html?slug=kv-cache-quantization-android" class="writing-card reveal">
         <div class="writing-card__date">2026-03-27</div>
         <div class="writing-card__title">
