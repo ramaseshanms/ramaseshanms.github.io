@@ -10,7 +10,7 @@ But push below 4 bits and things break. At 3 bits, models start hallucinating mo
 
 Google's TurboQuant research dropped a few days ago, introducing techniques originally designed for KV cache compression. I wanted to know if two of those techniques could be adapted to improve static weight quantization in the HQQ framework. The idea was to attack the problem from both ends: reduce the error before quantization happens, then correct for what's left after.
 
-The result: 32-45% perplexity reduction at 3-bit quantization across four models, verified on GPU. The code is open source.
+The result: 32-85% perplexity reduction at 3-bit quantization across five models (up to 3B parameters), verified on GPU. The code is open source.
 
 ---
 
@@ -74,7 +74,9 @@ where `basis = S^T @ sign(S @ residual)` and S is the random projection matrix. 
 
 The storage cost: 1 sign bit per projection plus one FP16 scale per group. At group_size=64 with 64 projections, that's 80 bits per group, or 1.25 additional bits per weight. A 3-bit quantization with QJL correction becomes 4.25 effective bits per weight.
 
-The random projection matrix is never stored. It's regenerated from a fixed seed during dequantization. The seed is an integer.
+The random projection matrix is never stored. It's regenerated from a fixed seed during dequantization. All groups within a layer share the same projection matrix (same seed), which means the matrix is generated once per layer, not once per group. This is a deliberate tradeoff: per-group seeds would give better statistical independence between groups (the JL lemma assumes independent projections), but would require storing or deriving a unique seed per group and regenerating a new matrix for each. In practice, shared projections work well because the residual vectors across groups are already decorrelated by the per-group scale/zero-point optimization.
+
+A note on numerical stability: the denominator in the optimal scale computation (`<basis, basis>`) can approach zero when the residual is very small. The implementation clamps with `+ 1e-8` to avoid division by zero. In practice this fires rarely — groups with near-zero residuals have near-zero QJL correction regardless of the scale.
 
 ---
 
@@ -109,7 +111,7 @@ All three modules are standalone — they depend only on PyTorch and can be extr
 
 ## What I Measured
 
-I ran benchmarks on four models across three quantization configurations, measuring WikiText-2 perplexity on an NVIDIA A10G GPU.
+I ran benchmarks on four models across three quantization configurations, measuring WikiText-2 perplexity (test split, 40 sliding windows of 2048 tokens with stride 512) on an NVIDIA A10G GPU. All runs use QJL seed 42. Seed sensitivity results appear later in this section.
 
 ### The Configurations
 
@@ -123,23 +125,25 @@ I ran benchmarks on four models across three quantization configurations, measur
 
 | Model | FP16 PPL | HQQ 3b | +Rotation | +Rotation+QJL | Full Improvement |
 |-------|----------|--------|-----------|---------------|-----------------|
+| Qwen2.5-3B | 7.40 | 76.20 | 32.66 | **11.06** | **-85.5%** |
 | TinyLlama-1.1B | 7.81 | 14.40 | 12.57 | **9.67** | **-32.9%** |
 | OPT-1.3B | 15.10 | 35.84 | 34.38 | **19.68** | **-45.1%** |
 | Qwen2.5-0.5B | 12.35 | 32.62 | 29.81 | **20.41** | **-37.4%** |
 | OPT-125M | 29.31 | 79.08 | 70.19 | **45.79** | **-42.1%** |
 
-The pattern is consistent: 32-45% perplexity reduction at 3-bit across all four models. HQQ-Turbo 3-bit with QJL (at 4.25 effective bpw) gets within striking distance of standard HQQ 4-bit quality.
+The pattern is consistent across all five models. The Qwen2.5-3B result is especially striking: rotation alone cuts perplexity from 76.20 to 32.66 (a 57% reduction at zero extra cost), and adding QJL brings it down to 11.06 — within 50% of the FP16 baseline at just 4.25 effective bpw.
 
 ### 4-Bit Results
 
 | Model | FP16 PPL | HQQ 4b | +Rotation | +Rotation+QJL | Full Improvement |
 |-------|----------|--------|-----------|---------------|-----------------|
+| Qwen2.5-3B | 7.40 | 8.19 | 8.45 | **7.85** | **-4.2%** |
 | TinyLlama-1.1B | 7.81 | 8.34 | 8.35 | **8.11** | **-2.8%** |
 | OPT-1.3B | 15.10 | 16.00 | 16.28 | **15.63** | **-2.3%** |
 | Qwen2.5-0.5B | 12.35 | 14.48 | 14.35 | **13.44** | **-7.2%** |
 | OPT-125M | 29.31 | 33.43 | 34.65 | **32.25** | **-3.5%** |
 
-At 4-bit, the baseline is already close to FP16, so absolute improvements are smaller. But the direction is always positive for the full pipeline (rotation+QJL). Notably, Qwen2.5-0.5B shows a 7.2% improvement even at 4-bit — consistent with the llama.cpp findings that Qwen architectures benefit disproportionately from rotation.
+At 4-bit, the baseline is already close to FP16, so absolute improvements are smaller. But the direction is always positive for the full pipeline (rotation+QJL). Qwen2.5-3B at 4-bit rot+qjl achieves PPL 7.85 — only 0.45 above the FP16 baseline.
 
 ### 2-Bit Results
 
@@ -147,7 +151,7 @@ Every model produced catastrophic perplexity (>4,000) at 2-bit, regardless of te
 
 ### Weight Reconstruction Error (Synthetic)
 
-On synthetic 2048x2048 weight matrices with realistic outlier structure:
+On synthetic 2048x2048 weight matrices with injected outlier structure (2% of columns scaled to 20x magnitude, plus log-normal per-channel scale variation, designed to mimic the "massive activation" channels documented in SmoothQuant and LLM.int8()):
 
 | Config | MSE | Cosine Similarity | MSE Reduction |
 |--------|-----|-------------------|---------------|
@@ -158,7 +162,24 @@ On synthetic 2048x2048 weight matrices with realistic outlier structure:
 | +Rotation | 0.05 | 0.999 | -81.6% |
 | +Rotation+QJL | 0.03 | 1.000 | -88.8% |
 
-The MSE improvements are dramatic — 80-89% reduction. This is where rotation truly shines: on individual weight matrices with clear outlier channels, the distributional fix is massive.
+The MSE improvements on synthetic data are dramatic — 80-89% reduction. This is where rotation truly shines: on individual weight matrices with clear outlier channels, the distributional fix is massive.
+
+### Seed Sensitivity
+
+The QJL projection matrix is generated from a random seed. How much do results vary across seeds? I ran TinyLlama-1.1B at 3-bit with rotation+QJL using five different seeds:
+
+| Seed | PPL |
+|------|-----|
+| 0 | 9.54 |
+| 42 | 9.67 |
+| 123 | 9.61 |
+| 777 | 9.68 |
+| 2024 | 9.74 |
+| **Mean** | **9.65** |
+| **Std** | **0.07** |
+| **CV** | **0.69%** |
+
+The coefficient of variation is under 1%. The perplexity range across all five seeds is 9.54 to 9.74, a spread of 0.20, which is negligible compared to the 4.73-point improvement over the HQQ 3b baseline (14.40). The MSE values are nearly identical across seeds (0.00000823 to 0.00000830), confirming that the random projection direction does not meaningfully affect reconstruction quality. Seed choice is not a meaningful hyperparameter for this technique.
 
 ---
 
@@ -200,7 +221,7 @@ The discussion also noted what's missing: QJL residual correction. Several comme
 
 **For framework developers**: Both the rotation and QJL modules are standalone (pure PyTorch, ~150 lines each) and can be integrated into any quantization pipeline — GPTQ, AWQ, or custom GGUF quantizers. The rotation is especially cheap: for power-of-2 group sizes, it's an O(n log n) in-place transform with zero storage cost.
 
-**For inference engines**: The dequantization path adds latency from QJL reconstruction (regenerating the random projection matrix from seed). On A10G, this adds 3-13ms per layer compared to <1ms for standard HQQ dequantization. For deployment, caching the projection matrix or using structured random matrices (e.g., Hadamard-Rademacher products) could eliminate this overhead.
+**For inference engines**: The dequantization path adds latency from QJL reconstruction (regenerating the random projection matrix from seed). On A10G, this adds 3-13ms per layer compared to <1ms for standard HQQ dequantization. The 4x variance is layer-size dependent: a 768x3072 MLP projection generates a larger projection matrix than a 768x768 attention weight, and `torch.randn` cost scales linearly with element count. Caching the projection matrix per layer eliminates the regeneration cost entirely (see "What's Next" below).
 
 ---
 
