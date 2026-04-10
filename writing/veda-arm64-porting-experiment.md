@@ -16,7 +16,7 @@ I built a system to fix this. I called it Veda.
 
 ---
 
-## The Problem: Six Weeks, Zero Memory
+## The Problem: Multiple Sessions, Zero Memory
 
 The project was ARM64 NEON porting for FFmpeg — a task that sounds simple until you are actually doing it.
 
@@ -24,7 +24,7 @@ FFmpeg is one of the most widely used open-source projects in the world. It is t
 
 This is painstaking work. Each function requires understanding both the original x86 code and the ARM64 calling conventions. ARM and x86 handle memory differently — a data race that x86 silently tolerates can corrupt state on ARM. Integer arguments passed to functions have different rules about their upper bits. Register preservation rules are different. And every new function must be verified correct *and* faster than the scalar fallback, or it is worse than useless.
 
-Across six weeks of AI-assisted sessions, I was running into the same structural problem: each new session started with no knowledge of what the previous sessions had learned. If a particular approach to loop unrolling had caused a register corruption bug last Tuesday, the AI would invent it again next Monday. If a specific way of handling function arguments only showed up as broken when called through FFmpeg's test harness — not in direct testing — that subtlety would be re-discovered each time rather than remembered.
+Across weeks of AI-assisted sessions, I was running into the same structural problem: each new session started with no knowledge of what the previous sessions had learned. If a particular approach to loop unrolling had caused a register corruption bug last Tuesday, the AI would invent it again next Monday. If a specific way of handling function arguments only showed up as broken when called through FFmpeg's test harness — not in direct testing — that subtlety would be re-discovered each time rather than remembered.
 
 ---
 
@@ -39,7 +39,7 @@ Veda is an attempt to give an AI system the institutional memory it structurally
 - `hypothesis` (2 entries): unverified starting points.
 - `dead_end` (6 entries): confirmed failures. Hard-blocked.
 
-**The Dispatch Engine.** Before attempting any non-trivial implementation, a proposal is submitted to a router (`dispatch/router.py`). The router checks the proposal against the corpus using tags and semantic similarity. It returns one of three verdicts: `ROUTE` (proceed, here are the relevant corpus entries), `BLOCKED` (this is a known dead end, stop), or `SKIP` (no relevant history, proceed with caution). Across six weeks, the router was called 91 times.
+**The Dispatch Engine.** Before attempting any non-trivial implementation, a proposal is submitted to a router (`dispatch/router.py`). The router checks the proposal against the corpus using tags and semantic similarity. It returns one of three verdicts: `ROUTE` (proceed, here are the relevant corpus entries), `BLOCKED` (this is a known dead end, stop), or `SKIP` (no relevant history, proceed with caution). Across the project, the router was called 91 times.
 
 **Specialists.** Nine domain-expert prompts — covering areas like ARM intrinsics, AArch64 ABI, memory model safety, float precision, and security — that review each proposal before implementation begins. They return `APPROVE`, `REJECT`, or `MODIFY` with reasoning. A single `REJECT` stops the work.
 
@@ -51,7 +51,7 @@ The intent: before the AI writes a single line of code, it checks what is alread
 
 ## The FFmpeg Work: What Actually Got Done
 
-Over the course of the project, roughly thirty FFmpeg modules were ported from x86 SIMD to ARM64 NEON, validated with both correctness tests and performance benchmarks on AWS Graviton3.
+Over the course of the project, 28 FFmpeg modules were ported from x86 SIMD to ARM64 NEON, validated with both correctness tests and performance benchmarks on AWS Graviton3.
 
 Every ported function had to pass a three-phase gate before being committed:
 
@@ -77,7 +77,7 @@ A sample of what passed:
 
 Some functions showed more modest gains — `h264chroma` motion compensation at 3.4–6.1x, `diracdsp` weighted overlay at 5.4–7.2x. A handful were deliberately left as C-only where the NEON overhead actually made them slower: `h263dsp` and `vp3dsp` horizontal loop filters both came in at 0.76–0.84x due to the cost of loading individual lanes from non-contiguous memory, below the 0.80x gate.
 
-By the end, a full `checkasm` run showed that of roughly 85 testable modules, 75 had NEON paths — either from our branch or from upstream FFmpeg's existing ARM64 code. Ten modules remained C-only. The project was approximately 88% complete.
+By the end, a full `checkasm` run showed that of approximately 95 testable modules, 85 had NEON paths — either from our branch or from upstream FFmpeg's existing ARM64 code. Ten modules remained C-only. The project was approximately 89% complete.
 
 ---
 
@@ -107,7 +107,7 @@ lsl  x5, x2, #8   // x5 = i * 256
 
 `lsl x4, x2, #8` shifts the full 64-bit value of `x2`. When `i = 3` and the upper 32 bits of `x2` are, say, `0xDEAD0000`, the result is `0x7AB600000000_0300` — a wildly wrong offset. Adding that to the output pointer and attempting a store produces the segfault.
 
-Veda's corpus had this documented. The relevant ground truth entry, written after a similar bug was found in a different function months earlier:
+Veda's memory system had this documented. At session start, a persistent memory file is loaded — one of several `feedback_*.md` entries written to disk after prior sessions. The entry for this exact pattern:
 
 > *AAPCS64 stack-passed int args have unspecified upper 32 bits when loaded through the checkasm trampoline via ldp. Always use cmp wN, wM for loop bounds and lsl wN, wN, #k for address arithmetic on int parameters — never lsl xN, xN, #k.*
 
@@ -120,7 +120,7 @@ lsl  w5, w2, #8   // 32-bit shift → result stored in w5, zero-extended to x5
 
 Writing to the 32-bit alias `wN` automatically zeros the upper 32 bits of `xN` in AArch64. The functions passed correctness tests immediately after.
 
-Without the corpus, this bug would have been rediscovered from scratch — possibly after hours of confusion, because it only manifests through the test framework's trampoline, not in direct function calls. The corpus made it a two-minute fix.
+The fix was classified as trivial — a single-character change per line — so it did not go through the full proposal → router → specialist loop. But the knowledge that made it trivial came from Veda's memory system. Without it, this bug would have been rediscovered from scratch — possibly after hours of confusion, because it only manifests through the test framework's trampoline, not in direct function calls. That memory file made it a two-minute fix.
 
 ---
 
@@ -177,7 +177,7 @@ I do not think that anymore.
 
 The one-time transaction problem is real. You port a codebase once. The customer does not come back. Recurring revenue requires recurring work, and ARM64 porting is by nature a finite job. The first company to pay you ports FFmpeg. There is no second FFmpeg to port.
 
-The corpus transferability problem is also real. Of 63 corpus entries, roughly 45 — the general ARM64 memory model rules, the dead ends on x86-only libraries, the float precision gotchas — apply to any codebase. The other 26 are specific to FFmpeg's internal patterns, its NEON assembly conventions, its checkasm framework. Those entries help nobody porting a database or a web server.
+The corpus transferability problem is also real. Of 63 corpus entries, 36 have no project association — the general ARM64 memory model rules, the dead ends on x86-only libraries, the float precision gotchas — and apply to any codebase. The other 27 are specific to FFmpeg's internal patterns, its NEON assembly conventions, its checkasm framework. Those entries help nobody porting a database or a web server.
 
 And the "just use Claude" problem is real. An experienced engineer with Claude and a few hours can figure out most of what Veda provides through general knowledge and careful prompting. The corpus is more efficient for repeated work on the same codebase. But there are almost no customers who will pay for efficient repeated work on the same codebase, because efficient repeated work on the same codebase is not a use case that most engineers face.
 
