@@ -199,6 +199,10 @@ A few things worth keeping.
 
 ---
 
-The code for the ARM64 branch is at [github.com/MadrasAI/FFmpeg](https://github.com/MadrasAI/FFmpeg) on the `arm64-port` branch. The Veda infrastructure lives at [github.com/MadrasAI](https://github.com/MadrasAI).
+*Code available on request.*
 
 *All performance numbers are from on-device measurements on AWS Graviton3 using Linux Perf Monitoring API hardware counters. All corpus statistics are queried directly from the PostgreSQL database.*
+
+---
+
+*Karpathy recently wrote about using LLMs to maintain personal knowledge bases. People are converging on this pattern from different directions — his from research synthesis, mine from production code that kept failing in the same ways.*
