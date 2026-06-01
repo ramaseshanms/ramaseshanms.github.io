@@ -182,6 +182,30 @@
         </div>
       </div>
 
+      <div class="project-card reveal reveal-delay-3">
+        <div class="project-card__icon">&#128274;</div>
+        <h3 class="project-card__title">EnterpriseGradeRAG &mdash; RBAC-Enforced RAG Backend</h3>
+        <p class="project-card__desc">
+          Production RAG system with physically-isolated role-based access control, hybrid dense&nbsp;+&nbsp;sparse
+          retrieval via Reciprocal Rank Fusion, grounded answer generation with citation tracking, and
+          a full evaluation pipeline (RAGAs + retrieval benchmarking). Five roles, four access levels,
+          167 tests.
+        </p>
+        <div class="project-card__tags">
+          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">ChromaDB</span>
+          <span class="tag">BM25</span><span class="tag">SQLite</span><span class="tag">Streamlit</span>
+          <span class="tag">Docker</span><span class="tag">RAGAs</span>
+        </div>
+        <div class="project-card__stats">
+          <div><span class="project-card__stat-value">0.634</span><span class="project-card__stat-label">NDCG@10</span></div>
+          <div><span class="project-card__stat-value">167</span><span class="project-card__stat-label">unit tests</span></div>
+          <div><span class="project-card__stat-value">5 roles</span><span class="project-card__stat-label">4 access levels</span></div>
+        </div>
+        <div class="project-card__link" style="margin-top:1rem;">
+          <a href="page.html?slug=enterprise-rag">Read the deep-dive &rarr;</a>
+        </div>
+      </div>
+
       <div class="project-card reveal reveal-delay-4">
         <div class="project-card__icon">&#128663;</div>
         <h3 class="project-card__title">BEV Perception for Autonomous Vehicles</h3>
@@ -281,6 +305,20 @@
     <div class="section-label reveal">Writing</div>
     <h2 class="reveal">Things I've learned</h2>
     <div style="margin-top: 3rem;" id="writing-list">
+
+      <a href="page.html?slug=enterprise-rag" class="writing-card reveal">
+        <div class="writing-card__date">2026-06-01</div>
+        <div class="writing-card__title">
+          Building an Enterprise RAG System That Actually Enforces Access Control
+          <span class="writing-card__arrow">&rarr;</span>
+        </div>
+        <div class="writing-card__excerpt">
+          A production-grade RAG backend with physically-isolated RBAC, hybrid dense&nbsp;+&nbsp;sparse
+          retrieval with Reciprocal Rank Fusion, grounded generation with citation tracking, and an
+          offline evaluation pipeline. Nine deep dives: ingestion, storage, RBAC, retrieval, generation,
+          API, observability, evaluation, and security. NDCG@10&nbsp;=&nbsp;0.634.
+        </div>
+      </a>
 
       <a href="page.html?slug=veda-arm64-porting-experiment" class="writing-card reveal">
         <div class="writing-card__date">2026-04-10</div>
