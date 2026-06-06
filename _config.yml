@@ -1,0 +1,40 @@
+title: Ramaseshan Subramanian
+description: "AI Systems Engineer — CUDA, LLM Inference, Edge AI"
+url: "https://ramaseshanms.github.io"
+baseurl: ""
+
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: "highlight"
+
+# Blog posts live in _articles/, output to /writing/name.html
+collections:
+  articles:
+    output: true
+    permalink: /writing/:name.html
+
+defaults:
+  - scope:
+      path: ""
+      type: articles
+    values:
+      layout: post
+      author: "M S Ramaseshan"
+      render_with_liquid: false
+
+plugins:
+  - jekyll-sitemap
+
+exclude:
+  - "*.py"
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - add_ecu_project.py
+  - inspect_styles.py

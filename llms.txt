@@ -1,0 +1,32 @@
+# Ramaseshan Subramanian — AI Systems Engineer
+
+> Senior AI Systems Engineer with 3.5+ years building production LLM inference systems, CUDA kernels, Vulkan compute runtimes, and autonomous AI agents. Key work: 300% throughput gains on NVIDIA Jetson, Vulkan LLM runtime for Android, Q4_HQQ quantization in llama.cpp (151 tok/s), and ECU-Insight — a framework-free autonomous diagnostic agent.
+
+## Writing
+
+- [ECU-Insight: Autonomous Vehicle Diagnostics with a Framework-Free Agent Loop](https://ramaseshanms.github.io/writing/autonomous-ecu-diagnostic-agent.html): Framework-free LLM agent that diagnoses ECU faults from live OBD-II signals. 62 tools, typed subagent isolation, explicit context compaction, 5-dimension graded eval. Flagship: 23 tool calls, 4 compactions, all dims pass.
+- [Building an Enterprise RAG System That Actually Enforces Access Control](https://ramaseshanms.github.io/writing/enterprise-rag.html): Production RAG backend with physically-isolated RBAC, hybrid dense+sparse retrieval (RRF), citation-grounded generation, and full eval pipeline. NDCG@10 = 0.634.
+- [I Built an AI That Remembers Its Own Mistakes. Here Is What Broke Anyway.](https://ramaseshanms.github.io/writing/veda-arm64-porting-experiment.html): Memory system for AI-assisted ARM64 porting. Caught a real segfault; also silently lost nine sessions of failure data. Honest account of what broke.
+- [How I Found a Bug in TurboQuant by Asking a Language Model What 2+2 Is](https://ramaseshanms.github.io/writing/tq3-kcache-bug-hunt.html): Root-caused a vec_dot bug in TQ3_0's KV cache path using a 4-run isolation test after three wrong theories.
+- [Cutting LLM Quantization Error in Half: What Happens When You Rotate Weights Before Compressing Them](https://ramaseshanms.github.io/writing/hqq-turbo-weight-quantization.html): Hadamard rotation and QJL residual correction applied to HQQ weight quantization. 32-45% perplexity reduction at 3-bit across four models.
+- [Running LLMs on Phones: What Happens When You Compress the Memory That Models Think With](https://ramaseshanms.github.io/writing/kv-cache-quantization-android.html): HQQ and TurboQuant KV cache quantization integrated into llama.cpp, cross-compiled for Android. TurboQuant 3x faster on-device.
+- [What I Learned Building a Vulkan LLM Runtime for Android From Scratch](https://ramaseshanms.github.io/writing/vulkan-llm-runtime.html): Built a from-scratch Vulkan 1.1 compute inference engine. Discovered 6ms Qualcomm fence overhead, pivoted to NEON SDOT. 0.5 → 11.2 tok/s journey.
+- [FMA-Net++: Video Super-Resolution and Deblurring](https://ramaseshanms.github.io/writing/FMA-Net++.html): Technical summary of the FMA-Net++ architecture for joint video super-resolution and deblurring using flow-guided dynamic modulation.
+
+## Raw Markdown (for direct ingestion)
+
+- [ECU-Insight (raw)](https://ramaseshanms.github.io/writing/autonomous-ecu-diagnostic-agent.md)
+- [Enterprise RAG (raw)](https://ramaseshanms.github.io/writing/enterprise-rag.md)
+- [Veda ARM64 Porting (raw)](https://ramaseshanms.github.io/writing/veda-arm64-porting-experiment.md)
+- [TQ3 KCache Bug Hunt (raw)](https://ramaseshanms.github.io/writing/tq3-kcache-bug-hunt.md)
+- [HQQ Turbo Quantization (raw)](https://ramaseshanms.github.io/writing/hqq-turbo-weight-quantization.md)
+- [KV Cache Android (raw)](https://ramaseshanms.github.io/writing/kv-cache-quantization-android.md)
+- [Vulkan LLM Runtime (raw)](https://ramaseshanms.github.io/writing/vulkan-llm-runtime.md)
+- [FMA-Net++ (raw)](https://ramaseshanms.github.io/writing/FMA-Net++.md)
+
+## Contact
+
+- Email: m.s.ramaseshan@gmail.com
+- GitHub: https://github.com/ramaseshanms
+- LinkedIn: https://linkedin.com/in/ramaseshan-subramanian
+- Portfolio: https://ramaseshanms.github.io
