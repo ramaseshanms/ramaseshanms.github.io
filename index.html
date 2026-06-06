@@ -123,6 +123,30 @@
     <div class="grid-2" style="margin-top: 3rem;">
 
       <div class="project-card reveal reveal-delay-1">
+        <div class="project-card__icon">&#128664;</div>
+        <h3 class="project-card__title">ECU-Insight &mdash; Autonomous ECU Diagnostic Agent</h3>
+        <p class="project-card__desc">
+          A framework-free LLM agent that diagnoses automotive ECU faults from live OBD-II signals.
+          62 tools across 9 namespaces, data-driven tool registry with scored search, explicit context
+          compaction with scratchpad persistence, and structurally-isolated typed subagents.
+          Graded 5-dimension eval rubric with deterministic CI replay.
+        </p>
+        <div class="project-card__tags">
+          <span class="tag">Python</span><span class="tag">Anthropic API</span>
+          <span class="tag">OBD-II</span><span class="tag">Pydantic</span>
+          <span class="tag">asyncio</span><span class="tag">ELM327</span><span class="tag">SQLite</span>
+        </div>
+        <div class="project-card__stats">
+          <div><span class="project-card__stat-value">62</span><span class="project-card__stat-label">tools / 9 namespaces</span></div>
+          <div><span class="project-card__stat-value">1.73</span><span class="project-card__stat-label">efficiency score</span></div>
+          <div><span class="project-card__stat-value">5/5</span><span class="project-card__stat-label">rubric dims pass</span></div>
+        </div>
+        <div class="project-card__link" style="margin-top:1rem;">
+          <a href="page.html?slug=autonomous-ecu-diagnostic-agent">Read the deep-dive &rarr;</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-1">
         <div class="project-card__icon">&#9889;</div>
         <h3 class="project-card__title">Viking &mdash; Vulkan LLM Runtime for Android</h3>
         <p class="project-card__desc">
@@ -305,6 +329,20 @@
     <div class="section-label reveal">Writing</div>
     <h2 class="reveal">Things I've learned</h2>
     <div style="margin-top: 3rem;" id="writing-list">
+
+      <a href="page.html?slug=autonomous-ecu-diagnostic-agent" class="writing-card reveal">
+        <div class="writing-card__date">2026-06-06</div>
+        <div class="writing-card__title">
+          ECU-Insight: Autonomous Vehicle Diagnostics with a Framework-Free Agent Loop
+          <span class="writing-card__arrow">&rarr;</span>
+        </div>
+        <div class="writing-card__excerpt">
+          I built ECU-Insight — an autonomous agent that diagnoses ECU faults from live OBD-II
+          signals with no stored DTCs to rely on. 62 tools, 9 namespaces, typed subagent isolation,
+          explicit context compaction, and a graded 5-dimension eval rubric. Flagship run: 23 tool
+          calls, 4 context compactions, 1.73 efficiency score — all 5 dimensions pass.
+        </div>
+      </a>
 
       <a href="page.html?slug=enterprise-rag" class="writing-card reveal">
         <div class="writing-card__date">2026-06-01</div>
